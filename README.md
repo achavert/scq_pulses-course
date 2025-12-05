@@ -3,7 +3,6 @@ The objective of this course is to be a practical introduction to pulse-level co
 
 ## Requirements
 
-
 ## Content
 The material for this course will be in Jupyter Notebooks format (.ipynb), but they will also be available in PDF. <br>
 This is the recommended course flow:
@@ -14,3 +13,4 @@ This is the recommended course flow:
 
 ## References and acknowledgements
 This content was produced under the QUORUM proyect at the Galician Supercomputing Centre (CESGA).
+
