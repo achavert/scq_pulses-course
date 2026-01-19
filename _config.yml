@@ -3,12 +3,3 @@ author: Alfredo Chavert Sancho
 execute:
   execute_notebooks: "off"
 
-# Esto evita que el buscador de archivos entre en carpetas de sistema o de build
-exclude_patterns: 
-  - "_build"
-  - ".git"
-  - ".github"
-  - "**.ipynb_checkpoints"
-  - ".DS_Store"
-  - "Thumbs.db"
-  - "venv"
