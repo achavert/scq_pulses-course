@@ -1,5 +1,5 @@
 format: jb-book
-root: README
+root: README.md
 chapters:
   - file: notebooks/01_openpulse_grammar/openpulse_grammar
   - file: notebooks/03_pulse_control_theory/pulse_control_theory
