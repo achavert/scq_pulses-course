@@ -1,4 +1,3 @@
-#test
 name: deploy-book
 
 on:
@@ -27,11 +26,16 @@ jobs:
 
       - name: Build the book
         run: |
-          jupyter-book build .
+          # Usamos jb build para evitar errores de ambigüedad con directorios
+          jb build . --all
+
+      - name: Create .nojekyll
+        run: |
+          # Esto evita que GitHub intente procesar las carpetas con Jekyll
+          touch _build/html/.nojekyll
 
       - name: GitHub Pages action
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_build/html
-          keep_files: true # Ayuda a que no se borren archivos entre despliegues
