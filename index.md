@@ -16,3 +16,12 @@ The material for this course will be in Jupyter Notebooks format (.ipynb), but t
 ## References and acknowledgements
 This content was produced under the QUORUM project at the Galician Supercomputing Centre (CESGA).
 
+<ul>
+  {% for file in site.static_files %}
+    {% if file.path contains 'notebooks/' and file.extname == '.html' %}
+      <li>
+        <a href="{{ file.path | relative_url }}">{{ file.path | remove: 'notebooks/' }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
