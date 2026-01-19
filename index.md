@@ -6,9 +6,9 @@ This course assumes that you have access to the QMIO CPD nodes at CESGA (through
 
 ## Contents
 
-1. **OpenPulse Grammar**: introduction to OpenQasm 3.0's OpenPulse grammar and QMIO's implemented features.
+1. [OpenPulse Grammar](notebooks/01_openpulse_grammar/openpulse_grammar.html): introduction to OpenQasm 3.0's OpenPulse grammar and QMIO's implemented features.
 2. **Qmio Example Experiments**: a folder with a set of experiment examples with QMIO.
-3. **Pulse Control Theory**: introduction to superconducting qubits' physics and driving.
+3. [Pulse Control Theory](notebooks/03_pulse_control_theory/pulse_control_theory.html): introduction to superconducting qubits' physics and driving.
 
 
 The material for this course will be in Jupyter Notebooks format (.ipynb), but they will also be available in PDF.
@@ -16,15 +16,3 @@ The material for this course will be in Jupyter Notebooks format (.ipynb), but t
 ## References and acknowledgements
 This content was produced under the QUORUM project at the Galician Supercomputing Centre (CESGA).
 
-
-# My Notebook Collection
-
-<ul>
-  {% for file in site.static_files %}
-    {% if file.path contains 'notebooks/' and file.extname == '.html' %}
-      <li>
-        <a href="{{ file.path | relative_url }}">{{ file.path | remove: 'notebooks/' }}</a>
-      </li>
-    {% endif %}
-  {% endfor %}
-</ul>
