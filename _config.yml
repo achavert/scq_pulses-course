@@ -1,12 +1,4 @@
-title: "QMIO OpenPulse Course"
-author: "Alfredo Chavert Sancho"
+title: QMIO OpenPulse Tutorials
+author: Alfredo Chavert Sancho
 execute:
-  execute_notebooks: "off"
-
-repository:
-  url: https://github.com/achavert/qmio-openpulse
-  branch: main
-
-html:
-  use_repository_button: true
-  use_download_button: true
+  execute_notebooks: "off" # Importante: "off" porque ya los tienes ejecutados
