@@ -11,28 +11,44 @@ permissions:
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
+    steps:
+      # 1️⃣ Clonar el repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
+      # 3️⃣ Instalar dependencias
       - name: Install dependencies
         run: |
-          pip install -U jupyter-book
+          python -m pip install --upgrade pip
+          pip install -U jupyter-book>=0.13
           pip install sphinx-inline-tabs
 
-      - name: Build the book
-        run: |
-          pwd
-          ls -la
-          jupyter-book build .
+      # 4️⃣ Mostrar versión (depuración)
+      - name: Check Jupyter Book version
+        run: jupyter-book --version
 
-      - name: GitHub Pages action
+      # 5️⃣ Limpiar build previo (opcional pero recomendable)
+      - name: Clean previous build
+        run: rm -rf _build
+
+      # 6️⃣ Construir el libro desde la raíz
+      - name: Build the book
+        run: jupyter-book build .
+
+      # 7️⃣ Listar archivos generados para depuración
+      - name: List built files
+        run: ls -la _build/html
+
+      # 8️⃣ Publicar en GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_build/html
-
