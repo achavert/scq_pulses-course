@@ -28,14 +28,15 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install jupyter-book
-          # Instalamos esto por si acaso hay problemas de compatibilidad en Ubuntu 24.04
-          pip install markupsafe==2.0.1 
+          # Instalamos una versión específica de una librería que a veces da el error EISDIR
+          pip install markupsafe==2.0.1
 
       - name: Build book
         run: |
-          # Forzamos a jupyter-book a usar el directorio actual explícitamente
-          # Usamos --config y --toc para que no haya duda de dónde están
-          jupyter-book build . --config _config.yml --toc _toc.yml
+          # 1. Limpieza absoluta
+          rm -rf _build/
+          # 2. Construcción estándar
+          jupyter-book build .
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
