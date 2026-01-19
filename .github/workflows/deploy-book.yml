@@ -5,39 +5,30 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  build:
+  deploy-book:
     runs-on: ubuntu-latest
-
+    permissions:
+      pages: write
+      id-token: write
+      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: 3.9
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install jupyter-book ghp-import
 
-      - name: Build the Jupyter Book
-        run: jupyter-book build .
+      - name: Build the book
+        run: |
+          jupyter-book build . 
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish to GitHub Pages
+        uses: DavHau/ghp-import@v1.4.1
         with:
-          path: _build/html
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+          args: -n -f -o _build/html

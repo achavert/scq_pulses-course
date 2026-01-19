@@ -3,10 +3,11 @@ author: "Alfredo Chavert Sancho"
 
 execute:
   execute_notebooks: off
-  
+
 repository:
   url: https://github.com/achavert/qmio-openpulse
   branch: main
+  path_to_book: ""
 html:
   use_repository_button: true
   use_issues_button: false
