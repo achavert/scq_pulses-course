@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
 permissions:
   contents: write
 
@@ -22,14 +22,18 @@ jobs:
       - name: Install dependencies
         run: |
           pip install jupyter-book
-          # Si tus notebooks necesitan librerías para mostrarse (ej. matplotlib), añádelas aquí
 
       - name: Build the book
         run: |
-          jupyter-book build . --all
+          jupyter-book build .
+
+      - name: Create .nojekyll file
+        run: |
+          touch ./_build/html/.nojekyll
 
       - name: GitHub Pages action
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_build/html
+          keep_files: true # Ayuda a que no se borren archivos entre despliegues
