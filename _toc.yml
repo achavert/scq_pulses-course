@@ -1,9 +1,6 @@
 format: jb-book
-root: index
-
+root: notebooks/01_openpulse_grammar/openpulse_grammar
 
 chapters:
   - file: notebooks/01_openpulse_grammar/openpulse_grammar
   - file: notebooks/03_pulse_control_theory/pulse_control_theory
-  # uncomment when ready
-  # - file: notebooks/03_section_three
