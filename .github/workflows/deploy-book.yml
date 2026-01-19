@@ -25,25 +25,19 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          pip install jupyter-book
-          # Si tienes un requirements.txt, descomenta la siguiente línea:
-          # pip install -r requirements.txt
+      - name: Install jupyter-book
+        run: pip install jupyter-book
 
       - name: Build book
         run: |
-          echo "--- Listando archivos en la raíz ---"
-          ls -F
-          echo "--- Ejecutando Jupyter Book ---"
-          jupyter-book build .
-          echo "--- Verificando si se creó la carpeta de salida ---"
-          if [ -d "_build/html" ]; then
-            ls -R _build/html | head -n 20
-          else
-            echo "ERROR: La carpeta _build/html no existe tras el build"
-            exit 1
-          fi
+          echo "--- 1. ¿DÓNDE ESTOY? ---"
+          pwd
+          echo "--- 2. ¿QUÉ ARCHIVOS HAY AQUÍ? ---"
+          ls -R
+          echo "--- 3. EJECUTANDO BUILD CON MÁS DETALLE ---"
+          jupyter-book build . --all
+          echo "--- 4. ¿SE CREÓ LA CARPETA? ---"
+          ls -d _build/html || echo "LA CARPETA NO EXISTE"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
