@@ -1,7 +1,11 @@
 title: QMIO OpenPulse Tutorials
 author: Alfredo Chavert Sancho
+theme: minima
+markdown: kramdown
 execute:
   execute_notebooks: off
 repository:
   url: https://github.com/achavert/qmio-openpulse 
   branch: main 
+
+
