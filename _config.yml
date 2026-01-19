@@ -2,3 +2,6 @@ title: QMIO OpenPulse Tutorials
 author: Alfredo Chavert Sancho
 execute:
   execute_notebooks: off
+repository:
+  url: https://github.com/achavert/qmio-openpulse 
+  branch: main 
