@@ -3,7 +3,7 @@ author: Alfredo Chavert Sancho
 execute:
   execute_notebooks: "off"
 
-# Esto es lo más importante para evitar el error EISDIR
+# Esto evita que el buscador de archivos entre en carpetas de sistema o de build
 exclude_patterns: 
   - "_build"
   - ".git"
