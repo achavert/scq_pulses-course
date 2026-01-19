@@ -1,4 +1,4 @@
-# Qubit Pulse Control with OpenPulse (test)
+# Qubit Pulse Control with OpenPulse
 The objective of this course is to be a practical introduction to pulse-level control of superconducting qubits with the OpenPulse grammar from OpenQasm 3.0, but also explain the physical concepts to be able to understand and design experiments with this language. Additionally, we'll focus on the particular hardware backend from QMIO, taking a look into which features are implemented.
 
 ## Requirements
