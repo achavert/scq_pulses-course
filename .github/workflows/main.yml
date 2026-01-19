@@ -3,7 +3,11 @@ name: deploy-book
 on:
   push:
     branches:
-      - main  # O la rama que uses
+      - main
+
+# ESTO ES LO QUE FALTA:
+permissions:
+  contents: write
 
 jobs:
   deploy-book:
@@ -19,6 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install jupyter-book
+          # Si tus notebooks necesitan librerías para mostrarse (ej. matplotlib), añádelas aquí
 
       - name: Build the book
         run: |
