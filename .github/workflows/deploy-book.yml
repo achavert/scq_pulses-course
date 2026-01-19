@@ -5,15 +5,10 @@ on:
     branches:
       - main
 
-# Estos permisos son CRUCIALES para que la acción pueda publicar la web
 permissions:
   contents: read
   pages: write
   id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -33,16 +28,26 @@ jobs:
       - name: Install dependencies
         run: |
           pip install jupyter-book
+          # Si tienes un requirements.txt, descomenta la siguiente línea:
+          # pip install -r requirements.txt
 
       - name: Build book
         run: |
-          # Esto genera los archivos HTML en la carpeta _build/html
+          echo "--- Listando archivos en la raíz ---"
+          ls -F
+          echo "--- Ejecutando Jupyter Book ---"
           jupyter-book build .
+          echo "--- Verificando si se creó la carpeta de salida ---"
+          if [ -d "_build/html" ]; then
+            ls -R _build/html | head -n 20
+          else
+            echo "ERROR: La carpeta _build/html no existe tras el build"
+            exit 1
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Subimos la carpeta donde Jupyter Book guardó el HTML
           path: "_build/html"
 
       - name: Deploy to GitHub Pages
