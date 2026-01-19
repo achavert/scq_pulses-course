@@ -27,7 +27,7 @@ jobs:
       - name: Build the book
         run: |
           # Forzamos la limpieza y apuntamos al config para evitar que intente leer carpetas como archivos
-          jupyter-book build .
+          jupyter-book build --all .
 
       - name: Create .nojekyll
         run: |
