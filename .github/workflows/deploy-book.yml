@@ -25,19 +25,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install jupyter-book
-        run: pip install jupyter-book
+      - name: Install Dependencies
+        run: |
+          pip install jupyter-book
+          # Instalamos esto por si acaso hay problemas de compatibilidad en Ubuntu 24.04
+          pip install markupsafe==2.0.1 
 
       - name: Build book
         run: |
-          echo "--- 1. ¿DÓNDE ESTOY? ---"
-          pwd
-          echo "--- 2. ¿QUÉ ARCHIVOS HAY AQUÍ? ---"
-          ls -R
-          echo "--- 3. EJECUTANDO BUILD CON MÁS DETALLE ---"
-          jupyter-book build . --all
-          echo "--- 4. ¿SE CREÓ LA CARPETA? ---"
-          ls -d _build/html || echo "LA CARPETA NO EXISTE"
+          # Forzamos a jupyter-book a usar el directorio actual explícitamente
+          # Usamos --config y --toc para que no haya duda de dónde están
+          jupyter-book build . --config _config.yml --toc _toc.yml
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
