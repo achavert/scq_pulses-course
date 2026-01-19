@@ -13,40 +13,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Clonar el repo
+      # Clonar el repo
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # 2️⃣ Configurar Python
+      # Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.9'
 
-      # 3️⃣ Instalar dependencias
+      # Instalar dependencias
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -U jupyter-book>=0.13
-          pip install sphinx-inline-tabs
+          pip install -U jupyter-book
 
-      # 4️⃣ Mostrar versión (depuración)
+      # Mostrar versión (depuración)
       - name: Check Jupyter Book version
         run: jupyter-book --version
 
-      # 5️⃣ Limpiar build previo (opcional pero recomendable)
+      # Limpiar build previo (opcional pero recomendable)
       - name: Clean previous build
         run: rm -rf _build
+        
+      - name: 📦 Cache Notebooks
+        uses: actions/cache@v2
+        with:
+          path: _build/.jupyter_cache
+          key: notebook_cache-${{hashFiles('_toc.yml', '_config.yml') }}
 
-      # 6️⃣ Construir el libro desde la raíz
+      # Construir el libro desde la raíz
       - name: Build the book
+        shell: bash -l {0}
         run: jupyter-book build .
 
-      # 7️⃣ Listar archivos generados para depuración
+      # Listar archivos generados para depuración
       - name: List built files
         run: ls -la _build/html
 
-      # 8️⃣ Publicar en GitHub Pages
+      # Publicar en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
