@@ -7,34 +7,55 @@ on:
   workflow_dispatch:
 
 jobs:
-  convert:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Jupyter
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install jupyter nbconvert
 
-      - name: Convert notebooks recursively to HTML
+      - name: Convert notebooks and create Jekyll wrappers
         run: |
+          set -e
+
           find notebooks -name "*.ipynb" | while read nb; do
-            echo "Converting $nb"
-            jupyter nbconvert --to html "$nb" --output-dir="$(dirname "$nb")"
+            dir="$(dirname "$nb")"
+            base="$(basename "$nb" .ipynb)"
+            html="$dir/$base.html"
+            md="$dir/$base.md"
+
+            echo "Processing $nb"
+
+            # Convert notebook to HTML
+            jupyter nbconvert --to html "$nb" --output-dir "$dir"
+
+            # Create Jekyll wrapper (overwrite-safe)
+            cat > "$md" <<EOF
+---
+layout: default
+title: $base
+---
+
+{% include_relative $base.html %}
+EOF
+
           done
 
-      - name: Commit generated HTML
+      - name: Commit generated files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add notebooks/**/*.html
-          git commit -m "Auto-build notebook HTML" || echo "No changes to commit"
+
+          git add notebooks
+          git commit -m "Auto-build notebooks with Jekyll wrappers" || echo "No changes to commit"
           git push
