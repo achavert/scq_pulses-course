@@ -1,15 +1,18 @@
 ---
 title: Notebooks
+layout: default
 ---
 
-## Contents
+## 📘 Notebooks disponibles
 
 <ul>
-{% for page in site.pages %}
-  {% if page.path contains 'notebooks/' and page.name endswith '.html' %}
+{% for p in site.pages %}
+  {% if p.path contains 'notebooks/' 
+        and p.path contains '.html'
+        and p.url != '/notebooks/' %}
     <li>
-      <a href="{{ page.url | relative_url }}">
-        {{ page.title | default: page.name }}
+      <a href="{{ p.url | relative_url }}">
+        {{ p.title | default: p.name }}
       </a>
     </li>
   {% endif %}
