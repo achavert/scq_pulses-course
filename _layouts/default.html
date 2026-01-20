@@ -2,25 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ page.title | default: site.title }}</title>
+  <title>{{ page.title }} | {{ site.title }}</title>
 
-  <!-- Main notebook + site styling -->
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/notebook.css' | relative_url }}">
-</head>
 
+  {% seo %}
+</head>
 <body>
 
-  <!-- Top navigation bar -->
-  <header class="top-nav">
+<header class="site-header">
+  <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+  <nav>
     <a href="{{ '/' | relative_url }}">Home</a>
-     <!-- <a href="{{ '/notebooks/' | relative_url }}">Notebooks</a> -->
+    <a href="{{ '/notebooks/' | relative_url }}">Notebooks</a>
     <a href="https://github.com/achavert/qmio-openpulse">GitHub</a>
-  </header>
+  </nav>
+</header>
 
-  <!-- Page content -->
-  <main class="page-content">
-    {{ content }}
-  </main>
+<main class="content">
+  {{ content }}
+</main>
+
+<footer class="site-footer">
+  <p>© {{ site.time | date: '%Y' }} – QMIO</p>
+</footer>
 
 </body>
 </html>
+
+
+
