@@ -3,7 +3,6 @@ layout: default
 title: Home
 ---
 
-
 ## Pulse control with OpenPulse
 
 A practical introduction to pulse-level control of superconducting qubits with the OpenPulse and Qmio's implemented features.
