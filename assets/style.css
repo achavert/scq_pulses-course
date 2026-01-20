@@ -1,0 +1,31 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: #fafafa;
+  color: #222;
+}
+
+.site-header {
+  background: #1e1e1e;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.site-header a {
+  color: white;
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+.content {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9em;
+  color: #666;
+}
