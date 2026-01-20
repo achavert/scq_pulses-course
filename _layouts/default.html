@@ -1,1 +1,26 @@
-<link rel="stylesheet" href="{{ '/assets/notebook.css' | relative_url }}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+
+  <!-- Site + notebook styling -->
+  <link rel="stylesheet" href="{{ '/assets/notebook.css' | relative_url }}">
+</head>
+
+<body>
+
+  <!-- ✅ NAVIGATION HEADER GOES HERE -->
+  <header class="top-nav">
+    <a href="{{ '/' | relative_url }}">Home</a>
+    <a href="{{ '/notebooks/' | relative_url }}">Notebooks</a>
+    <a href="https://github.com/achavert/qmio-openpulse">GitHub</a>
+  </header>
+
+  <!-- Page content (index.md or notebook wrapper) -->
+  <main class="page-content">
+    {{ content }}
+  </main>
+
+</body>
+</html>

@@ -19,3 +19,24 @@ div.code_cell {
   color: #1a1a1a;
   margin-top: 1.4em;
 }
+
+.top-nav {
+  background: #1f2933;
+  padding: 12px 24px;
+  display: flex;
+  gap: 20px;
+}
+
+.top-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.top-nav a:hover {
+  text-decoration: underline;
+}
+
+.page-content {
+  padding: 2rem;
+}
