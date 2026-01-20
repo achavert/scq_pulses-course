@@ -2,7 +2,7 @@ title: Qmio OpenPulse
 description: OpenPulse documentation and experiments for Qmio
 author: Alfredo Chavert Sancho
 theme: minima
-
+ 
 markdown: kramdown
 kramdown:
   math_engine: mathjax
