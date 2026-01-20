@@ -1,4 +1,4 @@
-# Qubit pulse control with OpenPulse
+# Qubit pulse control with OpenPulse (test)
 A practical introduction to pulse-level control of superconducting qubits with the OpenPulse and Qmio's implemented features.
 
 ## Requirements
