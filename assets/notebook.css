@@ -21,3 +21,10 @@ body {
 .top-nav a:hover {
   text-decoration: underline;
 }
+
+
+<div class="notebook-tools">
+  <a href="{{ page.path | replace: '.html', '.ipynb' }}" download class="button">
+    Download Notebook
+  </a>
+</div>
