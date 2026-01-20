@@ -3,7 +3,7 @@ title: Notebooks
 layout: default
 ---
 
-## 📘 Notebooks disponibles
+## Contents
 
 <ul>
 {% for p in site.pages %}
