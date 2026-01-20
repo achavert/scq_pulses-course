@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ page.title }}</title>
+  <title>{{ page.title | default: site.title }}</title>
 
-  <!-- Site + notebook styling -->
+  <!-- Main notebook + site styling -->
   <link rel="stylesheet" href="{{ '/assets/notebook.css' | relative_url }}">
 </head>
 
 <body>
 
-  <!-- NAVIGATION HEADER -->
+  <!-- Top navigation bar -->
   <header class="top-nav">
     <a href="{{ '/' | relative_url }}">Home</a>
     <a href="{{ '/notebooks/' | relative_url }}">Notebooks</a>
     <a href="https://github.com/achavert/qmio-openpulse">GitHub</a>
   </header>
 
-  <!-- Page content (index.md or notebook wrapper) -->
+  <!-- Page content -->
   <main class="page-content">
     {{ content }}
   </main>

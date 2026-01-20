@@ -1,18 +1,69 @@
-/* Notebook base styling */
+/* =========================
+   Global layout
+   ========================= */
+
 body {
+  margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  color: #222;
 }
+
+/* =========================
+   Top navigation bar
+   ========================= */
 
 .top-nav {
   background: #222;
-  padding: 10px;
+  padding: 12px 24px;
   text-align: center;
 }
+
 .top-nav a {
   color: #fff;
   margin: 0 15px;
   text-decoration: none;
+  font-weight: 500;
 }
+
 .top-nav a:hover {
   text-decoration: underline;
+}
+
+/* =========================
+   Page content
+   ========================= */
+
+.page-content {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* =========================
+   Notebook styling overrides
+   ========================= */
+
+.rendered_html h1,
+.rendered_html h2,
+.rendered_html h3,
+.rendered_html h4 {
+  margin-top: 1.5em;
+  font-weight: 600;
+}
+
+div.code_cell {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  padding: 10px;
+  margin: 1em 0;
+}
+
+div.output_area {
+  margin-top: 0.5em;
+}
+
+pre {
+  overflow-x: auto;
 }

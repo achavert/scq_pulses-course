@@ -11,31 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install Jupyter
-      run: |
-        python -m pip install --upgrade pip
-        pip install nbconvert jupyter
+      - name: Install Jupyter
+        run: |
+          python -m pip install --upgrade pip
+          pip install jupyter nbconvert
 
-    - name: Convert Notebooks Recursively to HTML
-      run: |
-        # Find all notebooks in notebooks/ and subdirectories
-        find notebooks -name "*.ipynb" | while read nb; do
-          echo "Converting $nb"
-          jupyter nbconvert --to html --template basic "$nb" --output-dir="$(dirname "$nb")"
-        done
+      - name: Convert notebooks recursively to HTML
+        run: |
+          find notebooks -name "*.ipynb" | while read nb; do
+            echo "Converting $nb"
+            jupyter nbconvert --to html "$nb" --output-dir="$(dirname "$nb")"
+          done
 
-    - name: Commit and Push HTML
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add notebooks/**/*.html
-        git commit -m "Auto-build notebooks HTML" || echo "No changes to commit"
-        git push
+      - name: Commit generated HTML
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add notebooks/**/*.html
+          git commit -m "Auto-build notebook HTML" || echo "No changes to commit"
+          git push
