@@ -31,10 +31,11 @@ body {
 }
 
 .nav-logo {
-  height: 100px;   /* change this value */
+  height: 60px;   /* change this value */
   width: auto;    /* keeps aspect ratio */
 }
 
 nav .nav-logo {
-  margin-left: 0;                          
+  margin-left: 0;             
+  height: 40px;               
 }
