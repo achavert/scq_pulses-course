@@ -28,7 +28,7 @@ jobs:
         run: |
           find notebooks -name "*.ipynb" | while read nb; do
             echo "Converting $nb"
-            jupyter nbconvert --to html "$nb" --output-dir="content/" --HTMLExporter.embed_css=False
+            jupyter nbconvert --to html "$nb" --output-dir="content/" --template assets/nbconvert
           done
           
       - name: Add Jekyll front-matter
