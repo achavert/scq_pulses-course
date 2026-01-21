@@ -9,29 +9,12 @@ body {
   background: #07599C;
   color: white;
   padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.site-header h1 {
-  margin: 0;
-}
-
-.site-header nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem; /* espacio entre links y logo */
 }
 
 .site-header a {
   color: white;
   margin-right: 1rem;
   text-decoration: none;
-}
-
-.nav-logo {
-  height: 40px; /* ajusta el tamaño de la imagen */
 }
 
 .content {
