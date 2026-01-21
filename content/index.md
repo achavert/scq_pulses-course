@@ -5,6 +5,6 @@ layout: default
 
 ## Contents
 
-[OpenPulse grammar](contents/openpulse.md)
+[OpenPulse grammar](openpulse.md)
 
-[Pulse control theoryr](contents/html/pulse_control_theory.html)
+[Pulse control theory](html/pulse_control_theory.html)
