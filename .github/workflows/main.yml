@@ -28,13 +28,13 @@ jobs:
         run: |
           find notebooks -name "*.ipynb" | while read nb; do
             echo "Converting $nb"
-            jupyter nbconvert --to html "$nb" --output-dir="$(dirname "$nb")"
+            jupyter nbconvert --to html "$nb" --output-dir="pages/"
           done
 
       - name: Commit generated HTML
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add notebooks/**/*.html
+          git add pages/*.html
           git commit -m "Auto-build notebook HTML" || echo "No changes to commit"
           git push
