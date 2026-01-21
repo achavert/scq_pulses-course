@@ -44,7 +44,6 @@ body {
   text-decoration: underline;
 }
 
-
 .site-logos {
   display: flex;
   align-items: center;
@@ -53,10 +52,10 @@ body {
 
 .cesga-logo {
   height: 60px;   
-  width: auto;  
+  width: auto;   
 }
 .quorum-logo {
-  height: 60px;   
+  height: 80px;   
   width: auto;  
 }
 
