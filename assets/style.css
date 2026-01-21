@@ -19,7 +19,6 @@ body {
 
 .site-title {
   margin: 0;
-  gap: 1.5rem;
 }
 
 .site-title a {
@@ -29,6 +28,7 @@ body {
 }
 
 .nav-links {
+  margin-top: 0.75rem;
   display: flex;
   gap: 1rem;
 }
