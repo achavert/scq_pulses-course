@@ -30,7 +30,7 @@ jobs:
             echo "Converting $nb"
             jupyter nbconvert --to html "$nb" --output-dir="content/" --template assets/nbconvert
           done
-          
+
       - name: Add Jekyll front-matter
         run: |
           for f in content/*.html; do
