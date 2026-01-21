@@ -28,14 +28,9 @@ jobs:
         run: |
           find notebooks -name "*.ipynb" | while read nb; do
             echo "Converting $nb"
-            jupyter nbconvert --to html "$nb" --output-dir="content/" --template assets/nbconvert
+            jupyter nbconvert --to html "$nb" --output-dir="content/"
           done
           
-      - name: Add Jekyll front-matter
-        run: |
-          for f in content/*.html; do
-            sed -i '1s;^;---\nlayout: default\n---\n;' "$f"
-          done
 
       - name: Commit generated HTML
         run: |
