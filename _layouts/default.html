@@ -11,15 +11,17 @@
 <body>
 
 <header class="site-header">
+  <div class="header-inner">
   <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-  <nav>
-    <div class="nav-links">
-      <a href="{{ '/' | relative_url }}">Home</a>
-      <a href="{{ '/content/' | relative_url }}">Notebooks</a>
-      <a href="https://github.com/achavert/qmio-openpulse">GitHub</a>
-    </div>
-    <img src="{{ '/assets/logo_cesga.png' | relative_url }}" alt="Logo" class="nav-logo">
-  </nav>
+    <nav>
+      <div class="nav-links">
+        <a href="{{ '/' | relative_url }}">Home</a>
+        <a href="{{ '/content/' | relative_url }}">Notebooks</a>
+        <a href="https://github.com/achavert/qmio-openpulse">GitHub</a>
+      </div>
+      <img src="{{ '/assets/logo_cesga.png' | relative_url }}" alt="Logo" class="nav-logo">
+    </nav>
+  </div>
 </header>
 
 <main class="content">
