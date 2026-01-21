@@ -19,18 +19,12 @@ body {
 
 .site-title {
   margin: 0;
-  font-size: 1.6rem;
 }
 
 .site-title a {
   color: white;
   text-decoration: none;
-}
-
-.site-nav {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  font-size: 1.6rem;
 }
 
 .nav-links {
@@ -48,9 +42,16 @@ body {
   text-decoration: underline;
 }
 
-.nav-logo {
-  height: 60px;   /* change this value */
-  width: auto;    /* keeps aspect ratio */
+
+.site-logos {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cesga-logo {
+  height: 60px;   
+  width: auto;  
 }
 
 /* -------------------------- */
