@@ -28,19 +28,19 @@ jobs:
         run: |
           find notebooks -name "*.ipynb" | while read nb; do
             echo "Converting $nb"
-            jupyter nbconvert --to html "$nb" --output-dir="content/"
+            jupyter nbconvert --to html "$nb" --output-dir="content/html/"
           done
 
       - name: Gather notebook media
         run: |
           mkdir -p content/all_media
-          find notebooks -type d -name "media" -exec sh -c 'cp -r "$1"/. content/media/' _ {} \;
+          find notebooks -type d -name "media" -exec sh -c 'cp -r "$1"/. content/html/media/' _ {} \;
 
       - name: Commit generated HTML
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add content/*.html
-          git add content/media
+          git add content/html/*.html
+          git add content/html/media
           git commit -m "Auto-build notebook HTML" || echo "No changes to commit"
           git push
