@@ -35,7 +35,7 @@ body {
 .nav-links a {
   color: white;
   text-decoration: none;
-  font-size: 1.0rem;
+  font-size: 0.5rem;
 }
 
 .nav-links a:hover {
