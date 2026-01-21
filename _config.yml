@@ -31,4 +31,5 @@ defaults:
 
 exclude:
   - tests
+  - notebooks
   - README.md
