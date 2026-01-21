@@ -33,7 +33,7 @@ jobs:
 
       - name: Gather notebook media
         run: |
-          find notebooks -type d -name "media" -exec rsync -a {}/* content/media/ \;
+          find notebooks -type d -name "media" -exec sh -c 'rsync -a "$1"/. content/media/' _ {} \;
 
       - name: Commit generated HTML
         run: |
