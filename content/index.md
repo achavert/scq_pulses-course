@@ -7,4 +7,4 @@ layout: default
 
 [OpenPulse grammar](openpulse_grammar.md)
 
-[Pulse control theory](html/pulse_control_theory.html)
+[Pulse control theory](pulse_control_theory.md)
