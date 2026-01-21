@@ -4,7 +4,7 @@ layout: default
 
 notebooks:
   - title: OpenPulse grammar
-    url: content/openpulse_grammar.html
+    url: content/openpulse_grammar.md
   - title: Pulse control theory
     url: content/pulse_control_theory.html
 ---
