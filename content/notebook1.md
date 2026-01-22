@@ -3,4 +3,4 @@ title: OpenPulse grammar
 layout: default
 ---
 
-{% include_relative markdown/openpulse_grammar.md %}
+<iframe src="html/openpulse_grammar.html" width="100%" height="1000px" style="border:none;"></iframe>
