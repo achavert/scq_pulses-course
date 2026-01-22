@@ -5,9 +5,10 @@ layout: default
 
 
 ## Contents
-{% raw %}
+<!--{% raw %}
 {% include_relative markdown/pulse_control_theory.md %}
-{% endraw %}
+{% endraw %}-->
+
 <!--[OpenPulse grammar](notebook1.md)-->
 
 <!--[Pulse control theory](notebook2.md)-->
