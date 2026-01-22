@@ -5,7 +5,7 @@ layout: default
 
 ## Contents
 
-{% include_relative markdown/openpulse_grammar.md %}
+{% include_relative markdown/pulse_control_theory.md %}
 
 <!--[OpenPulse grammar](notebook1.md)-->
 
