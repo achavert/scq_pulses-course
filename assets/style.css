@@ -68,14 +68,10 @@ body {
   padding: 0 1rem;
 }
 
-
-
-
 .notebook-wrapper {
     display: flex;
     flex-direction: row; /* Aligns items horizontally */
     gap: 30px; /* Space between sidebar and notebook */
-    justify-content: center;
     max-width: 100%;
 }
 
@@ -123,6 +119,7 @@ body {
 .notebook-content {
     flex-grow: 1; /* Takes all remaining width */
     min-width: 0; /* Prevents overflow issues on small screens */
+    justify-content: center;
 }
 
 /* Ensure iframe fits perfectly */
