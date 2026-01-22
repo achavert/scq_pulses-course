@@ -76,7 +76,6 @@ body {
     flex-direction: row; /* Aligns items horizontally */
     gap: 30px; /* Space between sidebar and notebook */
     max-width: 100%;
-    margin-left: 0;
 }
 
 /* 2. The Sidebar: Fixed width on the left */
@@ -92,7 +91,7 @@ body {
     
     /* Visual styling for the links */
     border-right: 1px solid #eaeaea;
-    padding-right: 15px;
+    /*padding-right: 15px;*/
 }
 
 /* Remove default bullet points and style links */
