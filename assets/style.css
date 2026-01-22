@@ -76,6 +76,7 @@ body {
     flex-direction: row; /* Aligns items horizontally */
     gap: 30px; /* Space between sidebar and notebook */
     max-width: 100%;
+    margin-left: 0;
 }
 
 /* 2. The Sidebar: Fixed width on the left */
@@ -115,7 +116,7 @@ body {
 }
 
 .sidebar a:hover {
-    background-color: #f6f8fa;
+    background-color: #abcdf0;
 }
 
 /* 3. The Notebook Area: Takes up remaining space */
