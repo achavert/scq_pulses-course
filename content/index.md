@@ -4,7 +4,14 @@ layout: default
 ---
 
 
-## Contents
+## Course
+
+[Introduction to pulse control]
+
+
+
+
+## Documentation
 
 [OpenPulse grammar](notebook1.md)
 
