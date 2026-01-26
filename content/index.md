@@ -7,7 +7,7 @@ layout: default
 ## Course
 
 ### [1. Introduction to qubit physics](notebook01.md)
-To understand how qubits are controlled to implement quantum gates, first we need to take a look at the qubit's physical system. On this notebook, we'll see how a qubit is encoded in superconducting circuits, which approximations may be used depending on our goals, what effects are expected from the thermal bath interaction, how does the qubit-resonator interaction work to perform measurements and how to define in OpenPulse the parameters for this systems.
+To understand how qubits are controlled to implement quantum gates, we first need to examine the qubit's physical system. In this notebook, we will see how a qubit is encoded in superconducting circuits, which approximations can be used depending on our goals, what effects arise from the interactions with the thermal bath, how the qubit-resonator interaction enables measurements, and how to define the parameters of this systems in OpenPulse.
 
 ### 2. Single qubit pulse control
 #### Qubit pulse driving
