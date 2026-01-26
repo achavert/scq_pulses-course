@@ -8225,11 +8225,14 @@ cal {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>When we want to define a pulse we'll need to set a frame (like we saw before) and a <strong>waveform</strong>, which establish the amplitude profile of the pulse we want to apply. For example, a <strong>constant</strong> pulse will have a constant amplitude profile, meaning that the maximum amplitude for the pulse will remain constant during its application. A <strong>gaussian</strong> pulse, on the other hand, starts with zero maximum amplitude, which will grow until some mean value, and then will decrease again with as in a gaussian profile. Here are some examples for this waveforms (constant on the left, gaussian on the right):</p>
+<p>When we want to define a pulse we'll need to set a frame (like we saw before) and a <strong>waveform</strong>, which establish the amplitude profile of the pulse we want to apply. For example, a <strong>constant</strong> pulse will have a constant amplitude profile, meaning that the maximum amplitude for the pulse will remain constant during its application. A <strong>gaussian</strong> pulse, on the other hand, starts with zero maximum amplitude, which will grow until some mean value, and then will decrease again with as in a gaussian profile. Here are some examples for this waveforms (constant on the left, gaussian on the right):
+<br/><br/></p>
 <div style="text-align: center;">
 <img alt="No description has been provided for this image" src="./media/constant.png" width="480"/> <img alt="No description has been provided for this image" src="./media/gaussian.png" width="480"/>
 </div>
-<p>The <em>waveform</em> variable type from OpenPulse can be expressed as:</p>
+<br/><br/>
+The *waveform* variable type can be expressed as:
+
 <ul>
 <li><p>An <strong>array of complex values</strong>: the waveform is determined by the complex value of the array in each unit time. In other words, each value of the array determines the pulse's amplitude in each time window of lenght <strong>dt</strong> (minimum time resolution, provided by hardware). A pulse defined by a 100 values array will have length 100dt. This option allows for complex time-dependent waveforms (DRAG for example), but requires to compute the especific complex amplitude for each instant. For Qmio, this <strong>dt</strong> is 0,5ns.
 <br/></p>
