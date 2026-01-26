@@ -6,7 +6,7 @@ layout: default
 
 ## Course
 
-### 1. Introduction to qubit physics
+### 1. [Introduction to qubit physics](notebook01.md)
 #### The isolated qubit system
 #### The open qubit system
 #### The qubit-resonator coupling
@@ -30,6 +30,6 @@ layout: default
 
 ## Documentation
 
-[OpenPulse grammar](notebook1.md)
+[OpenPulse grammar](notebookE1.md)
 
-[Pulse control theory](notebook2.md)
+[Pulse control theory](notebookE2.md)
