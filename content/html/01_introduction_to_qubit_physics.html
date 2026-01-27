@@ -7896,18 +7896,18 @@ cal {
     <span class="k">return</span> <span class="n">_instructions</span>
 
 <span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>        <span class="c1"># Specify the duration of the delays</span>
-<span class="n">nshots</span> <span class="o">=</span> <span class="mi">1000</span>       <span class="c1"># Number of repetitions for the job execution</span>
+<span class="n">nshots</span> <span class="o">=</span> <span class="mi">1000</span>                               <span class="c1"># Number of repetitions for the job execution</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>  <span class="c1"># Open the backend for Qmio QPU</span>
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>                                  <span class="c1"># Open the backend for Qmio QPU</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">delays</span><span class="p">:</span>
-        <span class="n">inst</span> <span class="o">=</span> <span class="n">set_instructions</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>      <span class="c1"># Instantiate the instructions for the specific delay duration</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">inst</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">nshots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span> <span class="c1"># Run instructions on QPU</span>
+        <span class="n">inst</span> <span class="o">=</span> <span class="n">set_instructions</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>                                              <span class="c1"># Instantiate the instructions for the specific delay duration</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">inst</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">nshots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>   <span class="c1"># Run instructions on QPU</span>
         <span class="k">try</span> <span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span>    <span class="c1"># Store job results if job is successful</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span>                                                <span class="c1"># Store job results if job is successful</span>
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>      <span class="c1"># Print error message if job fails</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>                                                          <span class="c1"># Print error message if job fails</span>
 </pre></div>
 </div>
 </div>
