@@ -7841,7 +7841,7 @@ From the theoretical concepts we have seen, we can now move into practice by und
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Examples">Examples<a class="anchor-link" href="#Examples">¶</a></h2><h4 id="Accessing-the-frames">Accessing the frames<a class="anchor-link" href="#Accessing-the-frames">¶</a></h4><p>Below, a basic example of accessing the OpenPulse frames in Qmio is presented:</p>
+<h2 id="1.5.-Examples">1.5. Examples<a class="anchor-link" href="#1.5.-Examples">¶</a></h2><h4 id="Accessing-the-frames">Accessing the frames<a class="anchor-link" href="#Accessing-the-frames">¶</a></h4><p>Below, a basic example of accessing the OpenPulse frames in Qmio is presented:</p>
 <pre><code>OPENQASM 3;
 defcalgrammar "openpulse";
 
@@ -7851,12 +7851,75 @@ cal {
     extern frame r8_acquire;
 }
 </code></pre>
-<p>First, we declare the grammar that we'll use inside the calibration blocks, in our case the <code>"openpulse"</code> grammar. Inside the <code>cal</code> block, we import the hardware-defined external variables in which the calibrated frames are stored. This frames can later be accessed and used to interact with the system in the <code>defcal</code> blocks, referencing this variables. If a frame is not used, we don't need to define it. The tags used in Qmio for each frame are following, where <code>QUBIT</code> references the <strong>physical qubit</strong> numeration in the device:</p>
+<p>First, we declare the grammar that we'll use inside the calibration blocks, in our case the <code>"openpulse"</code> grammar. Inside the <code>cal</code> block, we import the hardware-defined external variables in which the calibrated frames are stored. This frames can later be accessed and used to interact with the system in the <code>defcal</code> blocks, referencing this variables. If a frame is not used, we don't need to import it. The tags used in Qmio for each frame are following, where <code>QUBIT</code> references the <strong>physical qubit</strong> numeration in the device:</p>
 <ul>
 <li><strong><code>qQUBIT_drive</code></strong>: frame for qubit driving.</li>
 <li><strong><code>rQUBIT_measure</code></strong>: frame for the resonator's measure pulse.</li>
 <li><strong><code>rQUBIT_acquire</code></strong>: frame for resonator's measurement acquisition.</li>
 </ul>
+<h4 id="Measuring-$T_1$">Measuring $T_1$<a class="anchor-link" href="#Measuring-$T_1$">¶</a></h4><p>We actually don't need OpenPulse to study the qubit state on Qmio, as we can use the already implemented <code>x $QUBIT;</code> gate and <code>delay[TIME] $QUBIT</code> instruction from OpenQASM 3.0 in Qmio. First, we apply the X gate, which corresponds to a schedule of calibrated pulses that, in this case, perform the transition $\ket{0}\rightarrow\ket{1}$. If we measure inmediatly after this gate application, the measured state of the qubit should be very close to $\ket{1}$, limited by the fidelity of the gate implementation. But, if we let time pass before the measurement, we can see how the qubit will decay again to the ground-state $\ket{0}$. Here is an example to perform this measurements in OpenQASM 3.0:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d54d1e92">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="sd">'''</span>
+<span class="sd">    Import of all the necessary libraries</span>
+<span class="sd">'''</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qmio</span><span class="w"> </span><span class="kn">import</span> <span class="n">QmioRuntimeService</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">service</span> <span class="o">=</span> <span class="n">QmioRuntimeService</span><span class="p">()</span> <span class="c1"># Instantiate QmioRuntimeService </span>
+
+
+<span class="sd">'''</span>
+<span class="sd">    In this function, we use a f-string to define an instruction with an external variable, _delay. </span>
+<span class="sd">    By calling the function with the specific value as an argument, we can recover the instructions</span>
+<span class="sd">    for that particular value.</span>
+<span class="sd">'''</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_instructions</span><span class="p">(</span><span class="n">_delay</span><span class="p">):</span>
+    <span class="n">_instructions</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    x $21;</span>
+<span class="s1">    delay[</span><span class="si">{</span><span class="n">_delay</span><span class="si">}</span><span class="s1">ns] $21;</span>
+<span class="s1">    measure $21;</span>
+
+<span class="s1">    '''</span>
+    <span class="k">return</span> <span class="n">_instructions</span>
+
+<span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>        <span class="c1"># Specify the duration of the delays</span>
+<span class="n">nshots</span> <span class="o">=</span> <span class="mi">1000</span>       <span class="c1"># Number of repetitions for the job execution</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>  <span class="c1"># Open the backend for Qmio QPU</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">delays</span><span class="p">:</span>
+        <span class="n">inst</span> <span class="o">=</span> <span class="n">set_instructions</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>      <span class="c1"># Instantiate the instructions for the specific delay duration</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">inst</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">nshots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span> <span class="c1"># Run instructions on QPU</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span>    <span class="c1"># Store job results if job is successful</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>      <span class="c1"># Print error message if job fails</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=88fa594b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 </div>
 </div>
 </div>
