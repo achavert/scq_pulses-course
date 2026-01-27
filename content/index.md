@@ -14,6 +14,9 @@ The pulse-level implementation of some of the most common native gates will be e
 
 
 ### [3. Two-qubit pulse control](notebook03.md)
+Entanglement is one of the pillars behind quantum computing. On this notebook we will explore how the entanglement between qubit systems is physically achieved, which are the most common methods and how to implement some of them with OpenPulse.
+
+
 
 ### 4. Advanced examples
 
