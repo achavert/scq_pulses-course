@@ -7589,7 +7589,7 @@ It may not be still clear how the anharmonicity is responsible of this effect in
 </div>
 <br/>
 <br/>
-<p>As you can see, the system starts with zero energy ($\ket{0}$), and, at first, the incoming pulse produces the excitation, promoting the state and increasing the mean energy. This is analogous to the state $\ket{1}$ being populated by absorption. After some time, we arrive to the maximum amplitude ($\ket{1}$), from where the mean energy begins to decrease again. This is analogous to the relaxation of the system by stimulated emission. Finally, the characteristic Rabi-like periodic behaviour appears as the pulse continues to being applied.<br/>
+<p>As you can see, the system starts with zero energy $\left(\ket{0}\right)$, and, at first, the incoming pulse produces the excitation, promoting the state and increasing the mean energy. This is analogous to the state $\ket{1}$ being populated by absorption. After some time, we arrive to the maximum amplitude $\left(\ket{1}\right)$, from where the mean energy begins to decrease again. This is analogous to the relaxation of the system by stimulated emission. Finally, the characteristic Rabi-like periodic behaviour appears as the pulse continues to being applied.<br/>
 <br/>
 As settled before, there is no physical equivalence between these two systems -nothing quantum is going on with the pendulum- but in both cases a non-linear term in the energy spectrum breaks the unbounded resonance and a periodic response appears.</p>
 </div>
@@ -7603,6 +7603,22 @@ As settled before, there is no physical equivalence between these two systems -n
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="2.2.-Pulse-level-quantum-gates">2.2. Pulse-level quantum gates<a class="anchor-link" href="#2.2.-Pulse-level-quantum-gates">¶</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=236081a8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>We have seen why pulses produce Rabi oscillations in qubits, but we need to have some physical model to be able to produce the desired effect for a gate implementation. The driving coupled line can be expressed as follows:
+$$H_d=-i\Omega V_d(t)(a-a^\dagger),$$
+where $\Omega$ is some constant that depends con the capacitances of the superconducting circuit, $V_d(t)$ is the time-dependent potential that characterizes the pulse -this is the signal we have control over- and $a\left(a^\dagger\right)$ are the anihilation(creation) operators for the qubit oscillator. This operators, truncated for a two level system, cab be expressed as:
+$$H_d=\Omega V_d(t)\sigma_y,$$
+where $\sigma_y$ is the Pauli operator. The complete qubit-driving system has the following expression:
+$$H=H_0+H_d=-\frac{\hbar\omega_q}{2}\sigma_z+\Omega V_d(t)\sigma_y.$$</p>
 </div>
 </div>
 </div>
