@@ -8647,7 +8647,7 @@ defcalgrammar "openpulse";
 
 delay[13ns] $8;
 </code></pre>
-<p>The <strong>barrier frame1, frame2, ...</strong> instructions aligns the clocks to the latest time from the listed frames. Note that <em>decal</em> blocks have an implicit <em>barrier</em> for each frame they reference.</p>
+<p>The <strong><code>barrier frame1, frame2, ...</code></strong> instructions aligns the clocks to the latest time from the listed frames. Note that <code>decal</code> blocks have an implicit <code>barrier</code> for each frame they reference.</p>
 <pre><code>OPENQASM 3;
 defcalgrammar "openpulse";
 

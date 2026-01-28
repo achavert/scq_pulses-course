@@ -8082,9 +8082,12 @@ $$U(\theta,\phi,\lambda)=R_Z(\phi)R_Y(\theta)R_Z(\lambda)=\begin{pmatrix}
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The gates from before are some ideal representation of the operations we want to perform over the qubit, but it's real implementation is not direct for most cases and not general to every quantum device. Here we'll focus on the most usual pulse driving scheme and hardware capabilities.<br/>
+<p>The gates from before are some ideal representation of the operations we want to perform over the qubit, but it's real implementation is not direct for most cases and not general to every quantum device. Here we'll focus on the most usual pulse driving scheme and hardware capabilities.<br/></p>
+<div style="text-align: center;">
+<img alt="No description has been provided for this image" src="./media/driving.png" width="420"/>
+</div>
 <br/>
-Let's from now on make the (big) assumtion that our qubit is totally isolated and described by the Hamiltonian:
+<p>Let's from now on make the (big) assumtion that our qubit is totally isolated and described by the Hamiltonian:
 $$H_q=-\frac{\hbar\omega_q}{2}\sigma_z,$$
 where $\omega_q$ is the qubit's <strong>resonance frequency</strong> and $\sigma_z=\begin{pmatrix}1 &amp; 0\\ 0 &amp; -1\end{pmatrix}$. To control its state, we will couple it to a microwave drive line, like the one in this figure:
 (ñ: Poner esquema circuito)
