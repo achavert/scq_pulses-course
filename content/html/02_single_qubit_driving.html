@@ -7572,11 +7572,10 @@ $ \newcommand{\bn}{{\bf n}} $</p>
 <li><p>If the qubit is in $\ket{1}$, the applied photons can't promote the system to a higher state because of the transmon's anharmonicity. In this case, the only possible effect is stimulated emission (similar to what occurs in lasers), which relaxes de qubit back to $\ket{0}$.</p>
 </li>
 </ul>
-<p>When a continuous pulse of photons is applied, the populations of the states oscillate with time. This behaviour in known as <strong>Rabi oscillations</strong>. These oscillations are key to implementing quantum gates, because their period can be controlled by adjusting the pulse amplitude and duration. For example, by calibrating the pulse duration to completetly populate $\ket{1}$ starting from $\ket{0}$, one effectively implements an X gate.<br/>
+<p>When a continuous pulse of photons is applied, the populations of the states oscillate with time. This behaviour in known as <strong>Rabi oscillations</strong>. These oscillations are key to implementing quantum gates, because their period can be controlled by adjusting the pulse amplitude and duration. For example, by calibrating the pulse duration to completetly populate $\ket{1}$ starting from $\ket{0}$, one effectively implements an X gate.</p>
+<h4 id="The-pendulum-analogy">The pendulum analogy<a class="anchor-link" href="#The-pendulum-analogy">¶</a></h4><p>A natural question arises in this setup: <strong>If the qubit is an oscillator, why does its energy sometimes decrease even though we are always adding energy?</strong> The answer lies in the transmon's anharmonicity. If the qubit were a purely harmonic oscillator, driving it at the resonance frequency would lead to unbounded excitation, promoting the system indefinitely through higher energy states -just as in a classical forced harmonic oscillator. The anharmonicity of the transmon limits the population of the oscillator states, as only the $\ket{0}\leftrightarrow\ket{1}$ transition is allowed.<br/>
 <br/>
-A natural question arises in this setup: <strong>If the qubit is an oscillator, why does its energy sometimes decrease even though we are always adding energy?</strong> The answer lies in the transmon's anharmonicity. If the qubit were a purely harmonic oscillator, driving it at the resonance frequency would lead to unbounded excitation, promoting the system indefinitely through higher energy states -just as in a classical forced harmonic oscillator. The anharmonicity of the transmon limits the population of the oscillator states, as only the $\ket{0}\leftrightarrow\ket{1}$ transition is allowed.<br/>
-<br/>
-It may not be still clear how the anharmonicity is responsible of this effect in transmons, luckily, there is a classical system that describes a similar behaviour that could help us visualize it: the <strong>forced non-linear pendulum</strong>. Bringing our attention to the classical pendulum, when the oscillations are small enough, we can model it as an harmonic oscillator with a resonance frequency $\left(g/L\right)$, but when the oscillations grow in magnitude, the non-linear terms become relevant and the resonance frequency is shifted. If an oscillating force -pulse- is applied on the pendulum at the resonance frequency of its harmonic regime, the energy of the system will be bounded -meaning that it will reach a maximum amplitude- because the frequency will be detuned by the non-linear terms.<br/>
+It may not still be clear how the anharmonicity is responsible of this effect in transmons, fortunatetly, there is a classical system that presents a similar behaviour that could help us visualize it: the <strong>forced non-linear pendulum</strong>. Bringing our attention to the classical pendulum, when the oscillations are small enough, we can model it as an harmonic oscillator with a resonance frequency $\left(g/L\right)$, but when the oscillations grow in magnitude, the non-linear terms become relevant and the resonance frequency is shifted. If an oscillating force -pulse- is applied on the pendulum at the resonance frequency of its harmonic regime, the energy of the system will be bounded -meaning that it will reach a maximum amplitude- because the frequency will be detuned by the non-linear terms.<br/>
 <br/></p>
 <p>Although they are not physically equivalent systems, we can make the following analogy: when the pendulum has the minimum potential energy (no amplitude) we say that it's on the state $\ket{0}$, and it is in state $\ket{1}$ when it has the maximum aplitude. Obviously, for the classical pendulum there is an infinite number of energy eigenstates between those two, but we can understand these intermidiate states as the superposition of $\ket{0}$ and $\ket{1}$. The observed amplitude from the oscillation can be interpreted as the mean value, which depends on the populations of both states. The following video is a representation of this system with a constant amplitude pulse driving, keep in mind that this simulation is for the classical ecuations of the forced non-linear pendulum:</p>
 <br/>
@@ -7590,8 +7589,18 @@ It may not be still clear how the anharmonicity is responsible of this effect in
 <br/>
 <br/>
 <p>As you can see, the system starts with zero energy $\left(\ket{0}\right)$, and, at first, the incoming pulse produces the excitation, promoting the state and increasing the mean energy. This is analogous to the state $\ket{1}$ being populated by absorption. After some time, we arrive to the maximum amplitude $\left(\ket{1}\right)$, from where the mean energy begins to decrease again. This is analogous to the relaxation of the system by stimulated emission. Finally, the characteristic Rabi-like periodic behaviour appears as the pulse continues to being applied.<br/>
+<br/></p>
+<p>As seen before, the application of a quantum gate, for example an X gate, can be performed by choosing the appropiate duration of the pulse -depending also on its amplitude- that leaves the system totally excited. We can also visualize this with the forced pendulum, where we only need to stop applying the pulse when the oscillator reaches its maximum amplitude. On the next video, you can see that the systems starts at the minimum of energy -representing state $\ket{0}$- and when the pulse stops, it leaves the system in the maximum energy that could be achieved by the resonance -representing state $\ket{1}$.</p>
 <br/>
-As settled before, there is no physical equivalence between these two systems -nothing quantum is going on with the pendulum- but in both cases a non-linear term in the energy spectrum breaks the unbounded resonance and a periodic response appears.</p>
+<br/>
+<div style="text-align: center;">
+<video controls="" height="480" width="720">
+<source src="./media/XGatePendulum.mp4" type="video/mp4"/>
+    Tu navegador no soporta el video.
+  </video>
+</div>
+<br/>
+<br <p=""/>As settled before, there is no physical equivalence between these two systems -nothing quantum is going on with the pendulum- but in both cases a non-linear term in the energy spectrum breaks the unbounded resonance and a periodic response appears.
 </div>
 </div>
 </div>
@@ -7607,18 +7616,105 @@ As settled before, there is no physical equivalence between these two systems -n
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=75182730">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>We have seen why pulses produce Rabi oscillations in qubits, but we need to have some physical model to be able to design these pulses for a gate implementations. In this section, first we'll see step-by-step the characterization of pulses, and how they determine the Rabi oscillation period. Then, we'll learn how to implement these pulses with OpenPulse and observe Rabi oscillations on real quantum hardware.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=236081a8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We have seen why pulses produce Rabi oscillations in qubits, but we need to have some physical model to be able to produce the desired effect for a gate implementation. The driving coupled line can be expressed as follows:
+<h4 id="Qubit-driving-in-the-rotating-frame">Qubit driving in the rotating frame<a class="anchor-link" href="#Qubit-driving-in-the-rotating-frame">¶</a></h4><p>The driving coupled line can be expressed as follows:
 $$H_d=-i\Omega V_d(t)(a-a^\dagger),$$
 where $\Omega$ is some constant that depends con the capacitances of the superconducting circuit, $V_d(t)$ is the time-dependent potential that characterizes the pulse -this is the signal we have control over- and $a\left(a^\dagger\right)$ are the anihilation(creation) operators for the qubit oscillator. This operators, truncated for a two level system, cab be expressed as:
 $$H_d=\Omega V_d(t)\sigma_y,$$
-where $\sigma_y$ is the Pauli operator. The complete qubit-driving system has the following expression:
-$$H=H_0+H_d=-\frac{\hbar\omega_q}{2}\sigma_z+\Omega V_d(t)\sigma_y.$$</p>
+where $\sigma_y$ is the Pauli operator. The complete qubit-driving system has the following shape:
+$$H=H_0+H_d=-\frac{\hbar\omega_q}{2}\sigma_z+\Omega V_d(t)\sigma_y.$$
+This Hamiltonian will determine the time evolution of the system, due to both the intrinsic evolution of the oscillator and the driving. We have seen that the part corresponding to the intrinsic evolution can be easily reverted by working on the rotation frame of the qubit. When applying the corresponding transformations, the Hamiltonian of the qubit driving is:
+$$\tilde{H}=\Omega V_d(t) \bigl[\cos(\omega_q t)\sigma_y-\sin(\omega_q t)\sigma_x\bigl]. $$</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7a18d2fb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Potential-characterization">Potential characterization<a class="anchor-link" href="#Potential-characterization">¶</a></h4><p>The part of the pulse that we have control over is the oscillating potential that generates it: $V_d(t)$. The shape of this potential can be described by a <strong>constant amplitude</strong> $\left(V_0\right)$, an <strong>amplitude envelope</strong> $\left(s(t)\right)$ and the oscillatory component with a <strong>driving frequency</strong> $\left(\omega_d\right)$ and an <strong>initial phase</strong> $\left(\phi\right)$:
+$$V_d(t)=V_0\cdot s(t)\cdot \sin(\omega_d t + \phi).$$
+Nevertheless, it's usual to decompose oscillatory part in the <em>in-phase</em> $\mathcal{I}$ and <em>out-of-phase</em> $\mathcal{Q}$ terms:
+$$V_d(t)=V_0s(t)\left[\mathcal{I}\sin(\omega_d t) + \mathcal{Q}\cos(\omega_d t)\right],$$
+where:
+$$\begin{align*}
+\mathcal{I}=\cos\phi,\quad
+\mathcal{Q}=\sin\phi.
+\end{align*}$$
+By inserting this expression on the rotating-frame Hamiltonian, we arrive -after eliminating some high frequency terms by the rotating wave approximation- to the following effective Hamiltonian:
+$$\begin{align*}
+\tilde{H}=\frac{\Omega V_0}{2}s(t)\Bigl[-\left(\mathcal{I}\cos(\delta\omega t) + \mathcal{Q}\sin(\delta\omega t)\right)\sigma_x+\left(-\mathcal{I}\sin(\delta\omega t) + \mathcal{Q}\cos(\delta\omega t)\right)\sigma_y\Bigl],
+\end{align*}$$
+where $\delta\omega=\omega_q-\omega_d$ is the detuning of the driving frequency from the resonance of the qubit.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=89625a05">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id=""><a class="anchor-link" href="#">¶</a></h4>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=039b49c5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Rabi-oscillations">Rabi oscillations<a class="anchor-link" href="#Rabi-oscillations">¶</a></h4><p>When we drive the qubit at resonance -$\omega_d=\omega_q$- the expression from before is reduced to the much simpler:
+$$\tilde{H}=\frac{\Omega V_0}{2}s(t)\Bigl(-\mathcal{I}\sigma_x+\mathcal{Q}\sigma_y\Bigl).$$
+In general, this expression is the only thing we need to design the quantum gates. From here, we can choose different amplitudes $\left(V_0\right)$ or waveforms $\left(s(t)\right)$ for the pulse, in order to control the dynamics of the driving. <br/>
+<br/></p>
+<p>For example, let's work with the amplitude envelope $s(t)=1$ -also called <strong>constant</strong> pulse- and no initial phase, meaning that $\mathcal{I}=1$ and $\mathcal{Q}=0$. The Hamiltonian for this particular case is:
+$$\tilde{H}=-\frac{\Omega V_0}{2}s(t)\sigma_x,$$
+that determines an unitary evolution of the system that corresponds to a rotation over the $X$ axis of the Bloch sphere, an $R_X$ gate:
+$$U(t)=\exp\left(-i\frac{\Omega V_0}{2\hbar}t\cdot\sigma_x\right)=\exp\left(-i\frac{\Omega_R}{2}t\cdot\sigma_x\right)=R_X\left(\Omega_R t\right).$$
+In other words, we have implemented a parametrized rotation on the qubit state that depends on some tunnable parameters. <br/>
+<br/></p>
+<p>This rotation is the physical representation of the <strong>Rabi oscillation</strong> we saw before. If we compute the propability of the computational states over time -starting from $\ket{0}$- we get the expected oscillatory behaviour between them:</p>
+<p>$$\begin{align*}
+P_0(t)&amp;=\frac{1}{2}\left(1+\cos\left(\Omega_R t\right)\right),\quad
+P_1(t)&amp;=\frac{1}{2}\left(1-\cos\left(\Omega_R t\right)\right).
+\end{align*}$$</p>
+<br/>
+<div style="text-align: center;">
+<img alt="No description has been provided for this image" src="./media/RabiOscillationGraph.png" width="720"/>
+</div>
+<br/>
+<p>If we wanted to apply an X gate -disregarding global phases- we would just need to choose the appropiate pulse, so the Rabi oscillation stops when the desired populations are found:</p>
+<p>$$\Omega_R T = \pi\Rightarrow V_0 T = \frac{\hbar\pi}{\Omega},$$</p>
+<p>where $V_0$ -amplitude- and $T$ -duration- are the parameters of the pulse we have control over, and the rest depend on the system and are usually not known. In practice, we have to equivalent options:</p>
+<ul>
+<li><p>Fix the pulse amplitude $V_0$ and calibrate the appropiate duration by sweeping $T$.</p>
+</li>
+<li><p>Fix the pulse duration $T$ and calibrate the appropiate amplitude by sweeping $V_0$.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
