@@ -7725,23 +7725,22 @@ P_1(t)=\frac{1}{2}\left(1-\cos\left(\Omega_R t\right)\right).
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.3.-Rabi-oscillations-with-OpenPulse">2.3. Rabi oscillations with OpenPulse<a class="anchor-link" href="#2.3.-Rabi-oscillations-with-OpenPulse">¶</a></h2><p>Now that we have the theory, let's start with the hands-on introduction to its implementation with OpenPulse. The first step will be setting up the basic instructions for custom pulse configuration, then, we will develop an experiment to measure this Rabi oscillations in Qmio.<br/>
-<br/></p>
-<p>Below there is a basic OpenPulse instruction block for a custom pulse, that recreates the situation described in last section:</p>
+<h2 id="2.3.-Rabi-oscillations-with-OpenPulse">2.3. Rabi oscillations with OpenPulse<a class="anchor-link" href="#2.3.-Rabi-oscillations-with-OpenPulse">¶</a></h2><p>Now that we have the theory, let's start with the hands-on introduction to its implementation with OpenPulse. The first step will be setting up the basic instructions for custom pulse configuration, then, we will develop an experiment to measure this Rabi oscillations in Qmio.</p>
+<h4 id="Applying-a-custom-pulse">Applying a custom pulse<a class="anchor-link" href="#Applying-a-custom-pulse">¶</a></h4><p>Below there is a basic OpenPulse instruction block for a custom pulse, that recreates the situation described in last section:</p>
 <pre><code>OPENQASM 3;
 defcalgrammar "openpulse";
     
 cal {
-    extern frame q21_drive;
+    extern frame q8_drive;
     waveform wf = constant(1000dt, 0.15);
 }
 
-defcal custom_pulse $21{
-    play(q21_drive, wf);
+defcal custom_pulse $8{
+    play(q8_drive, wf);
 }
 
-custom_pulse $21;
-measure $21;
+custom_pulse $8;
+measure $8;
 </code></pre>
 <p>Let's break it down step-by-step:</p>
 <ul>
@@ -7753,15 +7752,15 @@ measure $21;
 </li>
 <li><p><code>defcal</code> blocks: implement the custom pulse schedule, they are targeted to specific qubits and can be invoked at any time -after its declaration- on the main instruction code.</p>
 </li>
-<li><p><code>extern frame q21_drive</code>: imports the frame of the <strong>physical</strong> qubit 21, including its resonant frequency from the calibrations.</p>
+<li><p><code>extern frame q8_drive</code>: imports the frame of the <strong>physical</strong> qubit 8, including its resonant frequency from the calibrations.</p>
 </li>
-<li><p><code>waveform wf = constant(1000dt, 0.15)</code>: defines a <code>waveform</code> type variable, which contains the information for the <strong>amplitude</strong>, <strong>duration</strong> and <strong>amplitude envelope</strong> of the pulse. This is where we can configure our pulse and change its effect. In this case, the waveform is constant $\left(s(t)=1\right)$ with a duration fo 1000 time units -for Qmio $dt=0.5$ns- and an amplitude of 0.15 -limited between 0.0 and 1.0- that recreates the pulse described in laste section for some arbitrary parameters.</p>
+<li><p><code>waveform wf = constant(900dt, 0.15)</code>: defines a <code>waveform</code> type variable, which contains the information for the <strong>amplitude</strong>, <strong>duration</strong> and <strong>amplitude envelope</strong> of the pulse. This is where we can configure our pulse and change its effect. In this case, the waveform is constant $\left(s(t)=1\right)$ with a duration fo 900 time units -for Qmio $dt=0.5$ns- and an amplitude of 0.15 -limited between 0.0 and 1.0- that recreates the pulse described in laste section for some arbitrary parameters.</p>
 </li>
-<li><p><code>play(q21_drive, wf)</code>: used to send the pulse instruction to the qubit, specifying its frame of effect and waveform. Notice that the driving frequency is set by the chosen frame, in this case it corresponds to the resonance frequency of qubit 21, as we directly imported it from calibrations.</p>
+<li><p><code>play(q8_drive, wf)</code>: used to send the pulse instruction to the qubit, specifying its frame of effect and waveform. Notice that the driving frequency is set by the chosen frame, in this case it corresponds to the resonance frequency of qubit 21, as we directly imported it from calibrations.</p>
 </li>
-<li><p><code>custom_pulse $21</code>: invokes the custom pulse instructions declared in the <code>decal</code>.</p>
+<li><p><code>custom_pulse $8</code>: invokes the custom pulse instructions declared in the <code>decal</code>.</p>
 </li>
-<li><p><code>measure $21</code>: invokes a default measurement instruction determined by the hardware provider, it returns a real value that allows to compute the discriminated binary output.</p>
+<li><p><code>measure $8</code>: invokes a default measurement instruction determined by the hardware provider, it returns a real value that allows to compute the discriminated binary output.</p>
 </li>
 </ul>
 <p>This instructions implement a constant envelope pulse for some arbitrary duration and amplitude equivalent to the situation we studied before. Keep in mind that by seting some duration, we are only seeing one point in time of the Rabi oscillation, and as we have no yet calibrated the pulse, it may not be the one that totally inverts the populations (the X gate).<br/>
@@ -7779,6 +7778,7 @@ measure $21;
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qmio</span><span class="w"> </span><span class="kn">import</span> <span class="n">QmioRuntimeService</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -7802,7 +7802,7 @@ measure $21;
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">instruction</span> <span class="o">=</span> <span class="s1">'''</span>
@@ -7810,16 +7810,16 @@ measure $21;
 <span class="s1">defcalgrammar "openpulse";</span>
 <span class="s1">    </span>
 <span class="s1">cal {</span>
-<span class="s1">    extern frame q21_drive;</span>
-<span class="s1">    waveform wf = constant(1000dt, 0.15);</span>
+<span class="s1">    extern frame q8_drive;</span>
+<span class="s1">    waveform wf = constant(900dt, 0.15);</span>
 <span class="s1">}</span>
 
-<span class="s1">defcal custom_pulse $21{</span>
-<span class="s1">    play(q21_drive, wf);</span>
+<span class="s1">defcal custom_pulse $8{</span>
+<span class="s1">    play(q8_drive, wf);</span>
 <span class="s1">}</span>
 
-<span class="s1">custom_pulse $21;</span>
-<span class="s1">measure $21;</span>
+<span class="s1">custom_pulse $8;</span>
+<span class="s1">measure $8;</span>
 <span class="s1">'''</span>
 </pre></div>
 </div>
@@ -7837,12 +7837,12 @@ measure $21;
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4f5810ee">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4f5810ee">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">QmioRuntimeService</span><span class="p">()</span>
@@ -7859,6 +7859,19 @@ measure $21;
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Waiting for resources
+Job started</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8788f572">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7870,7 +7883,67 @@ measure $21;
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f3cfcfb5">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f3cfcfb5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>(array([ 6.,  8., 11., 17., 24., 46., 50., 42., 51., 29., 30., 26., 34.,
+        20., 24., 42., 52., 51., 64., 71., 75., 75., 56., 42., 26., 15.,
+         8.,  2.,  2.,  1.]),
+ array([-2.51161249, -2.32647836, -2.14134423, -1.9562101 , -1.77107597,
+        -1.58594184, -1.40080771, -1.21567358, -1.03053945, -0.84540532,
+        -0.66027119, -0.47513706, -0.29000293, -0.1048688 ,  0.08026533,
+         0.26539946,  0.45053359,  0.63566772,  0.82080185,  1.00593598,
+         1.19107011,  1.37620424,  1.56133837,  1.7464725 ,  1.93160663,
+         2.11674076,  2.30187489,  2.48700902,  2.67214315,  2.85727728,
+         3.04241141]),
+ &lt;BarContainer object of 30 artists&gt;)</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9c55afe7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>In each execution of the instructions, one real value is retrieved -usually in [-3,3]- and by repetition we get a distribution that depends on the qubit state in the moment of the measurement. These values are generally distributed as asymetric gaussians around some value:</p>
+<ul>
+<li><p>Positive for measurements from the state $\ket{0}$.</p>
+</li>
+<li><p>Negative for measurements from the state $\ket{1}$.</p>
+</li>
+</ul>
+<p>This two distributions may present a great overlapping in values near 0, that increases the error for the classification. What we are seing on the output for this instruction is the two distributions at the same time, with different populations. This happens because the pulse has changed the qubit state to a superposition of $\ket{0}$ and $\ket{1}$, so in each shot of the execution we have a probability to measure each of these states, as expected for an arbitrary $R_X$ rotation.We can retrieve the population for each state by just counting the clasificated bits measured over all the executions:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f79bf90d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7878,7 +7951,92 @@ measure $21;
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">shots</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'P0 = </span><span class="si">{</span><span class="n">p0</span><span class="si">:</span><span class="s1">0.3f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'P1 = </span><span class="si">{</span><span class="n">p1</span><span class="si">:</span><span class="s1">0.3f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=58db5b86">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Observing-Rabi-oscillations">Observing Rabi oscillations<a class="anchor-link" href="#Observing-Rabi-oscillations">¶</a></h4><p>Unfortunatetly, we can only measure one time per execution, so in order to observe the Rabi oscillation we need to build a specific instruction for each time instant. This can be achieved by sweeping the duration of the applied pulse, executing a different instruction for each. There are many ways to implement this interaction with Python, the following was chosen to be very accessible to change the parameters of the instruction:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ffb11027">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">amplitude</span> <span class="o">=</span> <span class="mf">0.15</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_instruction</span><span class="p">(</span><span class="n">_duration</span><span class="p">):</span>
+    <span class="n">_instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+<span class="s1">        </span>
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
+<span class="s1">        waveform wf = constant(</span><span class="si">{</span><span class="n">_duration</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amplitude</span><span class="si">}</span><span class="s1">);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    '''</span>
+    <span class="k">return</span> <span class="n">_instruction</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_instruction</span><span class="p">(</span><span class="n">_instruction</span><span class="p">,</span> <span class="n">_shots</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>                                      
+        <span class="n">_res</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">_shots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>     
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">_res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">_shots</span><span class="p">,))</span>                                      
+        <span class="k">except</span> <span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">_res</span><span class="p">)</span> 
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_data</span><span class="p">(</span><span class="n">_durs</span><span class="p">,</span> <span class="n">_p1</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_durs</span><span class="p">,</span> <span class="n">_p1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'time [dt]'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$P_1$'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=eafe03a5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">durs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">800</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">durs</span><span class="p">:</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="n">build_instruction</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">run_instruction</span><span class="p">(</span><span class="n">instruction</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">shots</span><span class="p">)</span>
+
+<span class="n">plot_data</span><span class="p">(</span><span class="n">durs</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
