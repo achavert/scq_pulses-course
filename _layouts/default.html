@@ -38,64 +38,101 @@
 <script>
 document.getElementById('notebook-frame').onload = function() {
     const iframe = document.getElementById('notebook-frame');
-    
-    // Safety check in case the iframe doesn't exist on a page
     if (!iframe) return;
 
-    // Access the document inside the iframe
     const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Select headers
     const headers = innerDoc.querySelectorAll('h1, h2, h3, h4');
     const navContainer = document.getElementById('sidebar-nav');
-    
-    // If no navigation container exists, stop here
     if (!navContainer) return;
 
-    const ul = document.createElement('ul');
+    // Clear previous
+    navContainer.innerHTML = '';
+
+    // Create the Root List
+    const rootUl = document.createElement('ul');
+    navContainer.appendChild(rootUl);
+
+    // Keep track of the last item created at each level
+    // Level 1 = H1, Level 2 = H2, etc.
+    const lastItems = {
+        1: null,
+        2: null,
+        3: null,
+        4: null
+    };
 
     headers.forEach((header, index) => {
-        // Ensure the header has an ID for linking
-        if (!header.id) {
-            header.id = 'section-' + index;
-        }
+        // 1. Give header an ID
+        if (!header.id) header.id = 'section-' + index;
 
+        // 2. Determine Level (H1 -> 1, H2 -> 2)
+        const level = parseInt(header.tagName.substring(1));
+
+        // 3. Create the List Item
         const li = document.createElement('li');
+        li.className = 'leaf-node'; // Default to leaf (no children) until proven otherwise
+
+        // Create Toggle Button (Arrow)
+        const toggle = document.createElement('span');
+        toggle.className = 'toggle-btn';
+        toggle.onclick = (e) => {
+            // Prevent scrolling when clicking the arrow
+            e.stopPropagation(); 
+            li.classList.toggle('collapsed');
+        };
+
+        // Create Link
         const a = document.createElement('a');
-        
         a.textContent = header.innerText;
         a.href = '#';
-        a.style.cursor = 'pointer';
-
-        // --- NEW: Add indentation based on Header Level ---
-        const tagName = header.tagName.toUpperCase();
-        
-        if (tagName === 'H2') {
-            li.style.paddingLeft = '15px';
-            a.style.fontSize = '0.95em'; // Optional: slightly smaller text
-        } else if (tagName === 'H3') {
-            li.style.paddingLeft = '30px';
-            a.style.fontSize = '0.9em';
-            a.style.color = '#555'; // Optional: slightly lighter color
-        } else if (tagName === 'H4') {
-             li.style.paddingLeft = '45px';
-             a.style.fontSize = '0.85em';
-             a.style.color = '#777';
-        }
-        // --------------------------------------------------
-
-        // When clicked, scroll the IFRAME
         a.onclick = (e) => {
             e.preventDefault();
             header.scrollIntoView({ behavior: 'smooth' });
         };
 
+        li.appendChild(toggle);
         li.appendChild(a);
-        ul.appendChild(li);
-    });
 
-    navContainer.innerHTML = ''; // Clear any existing content
-    navContainer.appendChild(ul);
+        // 4. Place the LI in the correct parent
+        let parentUl;
+
+        if (level === 1) {
+            // H1 goes directly into Root
+            parentUl = rootUl;
+        } else {
+            // H2 goes into the last H1, H3 into last H2...
+            // Find the immediate parent item (level - 1)
+            const parentLi = lastItems[level - 1];
+
+            if (parentLi) {
+                // Determine if parent already has a sub-list
+                let subUl = parentLi.querySelector('ul');
+                if (!subUl) {
+                    subUl = document.createElement('ul');
+                    parentLi.appendChild(subUl);
+                    
+                    // Allow parent to collapse now that it has kids
+                    parentLi.classList.remove('leaf-node');
+                }
+                parentUl = subUl;
+            } else {
+                // Fallback: If H2 comes before any H1, put it in root
+                parentUl = rootUl;
+            }
+        }
+
+        parentUl.appendChild(li);
+
+        // 5. Update the "Last Item" tracker for this level
+        lastItems[level] = li;
+        
+        // Reset lower levels (e.g., if we hit a new H2, the previous H3 chain is done)
+        for (let i = level + 1; i <= 4; i++) {
+            lastItems[i] = null;
+        }
+    });
 };
 </script>
 
