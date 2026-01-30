@@ -13,7 +13,7 @@ To understand how quantum gates are implemented, we first need to examine the qu
 The pulse-level implementation of some of the most common native gates will be explored, including the physical meaning of qubit driving, the different techniques and features available in Qmio using the OpenPulse grammar, and illustrative examples of gate calibration and single-qubit operations based on Rabi oscillations.
 
 ### [3. Qubit spectroscopy](notebook03.md)
-Pulses give a grain-level access to the transmon dynamics, like excitation to higher energy levels. In this notebook we'll see how the qubit responds to pulses with different frequencies, exploring some observable fenemona at Qmio.
+Pulses give grain-level access to the transmon dynamics, like excitation to higher energy states. In this notebook we'll see how the qubit responds to pulses with different frequencies, exploring some observable fenemona at Qmio.
 
 
 ### [4. Two-qubit pulse control](notebook04.md)
