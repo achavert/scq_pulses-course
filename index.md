@@ -15,11 +15,11 @@ This course is composed of three notebooks that explain the superconducting qubi
 
 
 ### Notebooks
-[1. **Introduction to qubit physics**](/content/notebook01.md)
+- [1. **Introduction to qubit physics**](/content/notebook01.md)
 
-[2. **Single-qubit driving**](/content/notebook02.md)
+- [2. **Single-qubit driving**](/content/notebook02.md)
 
-[3. **Two-qubit driving**](/content/notebook03.md)
+- [3. **Two-qubit driving**](/content/notebook03.md)
 
 ### Documentation
 - [OpenPulse grammar documentation for Qmio](notebookE1.md)
