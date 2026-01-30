@@ -7866,8 +7866,13 @@ A qubit encoding can be performed by restricting the system to a subspace spanne
 Imagine we want to transition from the state $\ket{0}$ to $\ket{1}$. To do so, we need to apply a pulse of frequency $\omega_q$, but this frequency is also the transition frequency for $\ket{1}\leftrightarrow\ket{2}$, $\ket{2}\leftrightarrow\ket{3}$, and so on, due to the harmonicity of the oscillator. This means that we do not have control over which transition will occur. For example, if the system is initially in the state $\ket{1}$ and we want to apply an $X$ gate to transition to $\ket{0}$, the result of applying a pulse of frequency $\omega_q$ may be the desired transition to $\ket{0}$ (via stimulated emission), but also the undesired transition to $\ket{2}$ (via absorption). The latter leads to population outside the computational subspace, resulting in loss of coherence. <br/>
 <br/>
 The most popular configuration for superconducting qubits, including the so-called <strong>transmons</strong>, is achieved by substituting the inductor with a Josephson junction. This element changes the potential energy profile of the oscillator, resulting in non-equidistant energy levels:
-$$\left(E_{n+1}-E_{n}\right)&lt;\left(E_{n}-E_{n-1}\right).$$
-In this case, the oscillator transitions have different frequencies, allowing control over which transitions can occur when applying a pulse. Considering the most generic expression for its Hamiltonian:
+$$\left(E_{n+1}-E_{n}\right)&lt;\left(E_{n}-E_{n-1}\right).$$</p>
+<br/>
+<div style="text-align: center;">
+<img alt="No description has been provided for this image" src="./media/transmon_potential_energy.png" width="580"/>
+</div>
+<br/>
+<p>In this case, the oscillator transitions have different frequencies, allowing control over which transitions can occur when applying a pulse. Considering the most generic expression for its Hamiltonian:
 $$H=\sum_{n=0}^\infty\hbar\omega_{n,n+1}a^\dagger a,\quad \omega_{n,n+1}&lt;\omega_{n-1,n}\quad \forall n;$$
 where $\omega_{n,n+1}$ is the $\ket{n}\leftrightarrow\ket{n+1}$ transition frequency and the ground-state energy is set to $E_0=0$. If we want to encode our qubit in the $\{\ket{0},\ket{1}\}$ subspace, we need to use pulses with frequency $\omega_{01}$, avoiding any other undesired transition.<br/>
 <br/>
