@@ -39,23 +39,19 @@
 document.getElementById('notebook-frame').onload = function() {
     const iframe = document.getElementById('notebook-frame');
     
-    // Safety check in case the iframe doesn't exist on a page
     if (!iframe) return;
 
-    // Access the document inside the iframe
     const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Select headers (ONLY H1, H2, H3)
     const headers = innerDoc.querySelectorAll('h1, h2, h3');
     const navContainer = document.getElementById('sidebar-nav');
     
-    // If no navigation container exists, stop here
     if (!navContainer) return;
 
     const ul = document.createElement('ul');
 
     headers.forEach((header, index) => {
-        // Ensure the header has an ID for linking
         if (!header.id) {
             header.id = 'section-' + index;
         }
@@ -67,10 +63,13 @@ document.getElementById('notebook-frame').onload = function() {
         a.href = '#';
         a.style.cursor = 'pointer';
 
-        // --- Add indentation based on Header Level ---
         const tagName = header.tagName.toUpperCase();
         
-        if (tagName === 'H2') {
+        // --- Match H1 and H2 sizes, keep H3 smaller ---
+        if (tagName === 'H1') {
+            a.style.fontSize = '0.95em'; // Same size as H2
+            a.style.fontWeight = 'bold';  // Optional: keeps H1 distinct via weight
+        } else if (tagName === 'H2') {
             li.style.paddingLeft = '15px';
             a.style.fontSize = '0.95em'; 
         } else if (tagName === 'H3') {
@@ -78,9 +77,8 @@ document.getElementById('notebook-frame').onload = function() {
             a.style.fontSize = '0.9em';
             a.style.color = '#555'; 
         }
-        // --------------------------------------------------
+        // ----------------------------------------------
 
-        // When clicked, scroll the IFRAME
         a.onclick = (e) => {
             e.preventDefault();
             header.scrollIntoView({ behavior: 'smooth' });
@@ -90,11 +88,10 @@ document.getElementById('notebook-frame').onload = function() {
         ul.appendChild(li);
     });
 
-    navContainer.innerHTML = ''; // Clear any existing content
+    navContainer.innerHTML = ''; 
     navContainer.appendChild(ul);
 };
 </script>
-
 </body>
 </html>
 
