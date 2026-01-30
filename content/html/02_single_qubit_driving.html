@@ -8488,7 +8488,7 @@ Job started</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In the figure we see that most of the measurements seem to correspond to the $\ket{1}$ state, as expected from the calibration that yielded a 0.824 population for the excited state. There are many techniques to enhance the performance -increasing the fidelity- of this gates, like finding some optimal value for the</p>
+<p>In the figure we see that most of the measurements seem to correspond to the $\ket{1}$ state, as expected from the calibration that yielded a 0.824 population for the excited state. There are many techniques to enhance the performance -increasing the fidelity- of this gates, like finding some optimal values for amplitude and duration that reduce side effects.</p>
 </div>
 </div>
 </div>
@@ -8500,6 +8500,100 @@ Job started</pre>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="2.4.-Pulse-waveforms">2.4. Pulse waveforms<a class="anchor-link" href="#2.4.-Pulse-waveforms">¶</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=22d22423">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>In last section we used a pulse with a constant amplitude envelope, meaning $s(t)=1$, because it's the most simple case and the time evolution is easily solvable. Nevertheless, it's not the only -nor the best- option, as it has some unwanted interaction due to a weak anharmonicity. Effectively, we could use any shape for the pulse, as the Rabi oscillation will depend only on its integral.<br/>
+<br/>
+There are two main options to reduce the high-level interactions:</p>
+<ul>
+<li><p><strong>Gaussian pulses</strong>: it can be proven by simulation that gaussian pulses reduce the off-resonance interactions due to weak anharmonicity. They consist on a pulse that follows a truncated gaussian distribution, with the maximum value at half the duration of the pulse. Gaussian pulses have three parameters: <strong>amplitude</strong>, <strong>duration</strong> and <strong>standard deviation</strong>. It's common to calibrate them by fixing the duration and standard deviation. The general expression for the envelope is: $s(t)=e^{-\frac{(t-T/2)^2}{2\sigma^2}},$
+where $A$ is the amplitude, $T$ is the pulse duration and $\sigma$ is the standard deviation.</p>
+</li>
+<li><p><strong>DRAG (Derivative Reduction by Adiabatic Gate) pulses</strong>: although gaussian pulses reduce this effects, the do not remove them, generating leakage out of the computational subspace and inducing phase shifts from the theorical for the gate. The DRAG protocol uses a diferent envelope for the two pulse components $\left(\mathcal{I}\text{ and }\mathcal{Q}\right)$, it's characterized by a <strong>correction parameter</strong> $\beta$ and a -usually- gaussian envelope $s(t)$:
+$$
+s'(t)=\begin{cases}
+s(t),\ \text{on } \mathcal{I},\\
+\\
+\beta\dot{s}(t),\ \text{on } \mathcal{Q}.
+\end{cases}
+$$</p>
+</li>
+</ul>
+<p>DRAG pulses aim to correct the side effect of the in-phase pulse -which performs the gate- by applying an out-of-phase correctio pulse at the same time. There are also other techniques that take into account some detunng terms in order to reduce simultaneously both of the effects we talked about.<br/>
+<br/></p>
+<p>OpenPulse lets us configure this envelopes -also called waveforms- and even has some of the most common ones already implemented. For example, the two we talked before can be declared as follows:</p>
+<ul>
+<li><p><strong><code>gaussian(amplitude, duration, sigma)</code></strong></p>
+</li>
+<li><p><strong><code>drag(amplitude, duration, sigma, beta)</code></strong></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4673a4ea">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Gaussian-X-gate-calibration">Gaussian X-gate calibration<a class="anchor-link" href="#Gaussian-X-gate-calibration">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79d908fb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_gaussian</span><span class="p">(</span><span class="n">_amp</span><span class="p">):</span>
+    <span class="n">_instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+<span class="s1">        </span>
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
+<span class="s1">        waveform wf = gaussian(</span><span class="si">{</span><span class="n">_amp</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s1">);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    '''</span>
+    <span class="k">return</span> <span class="n">_instruction</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_instruction</span><span class="p">(</span><span class="n">_backend</span><span class="p">,</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">_shots</span><span class="p">):</span>  
+        <span class="n">_res</span> <span class="o">=</span> <span class="n">_backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">_shots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>     
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">_res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">_shots</span><span class="p">,))</span>                                      
+        <span class="k">except</span> <span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">_res</span><span class="p">)</span> 
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_data</span><span class="p">(</span><span class="n">_amps</span><span class="p">,</span> <span class="n">_p1</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_amps</span><span class="p">,</span> <span class="n">_p1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'Amplitude'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$P_1$'</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
