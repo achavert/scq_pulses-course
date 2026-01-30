@@ -7857,7 +7857,7 @@ From here, we can derive all the arithmetic used in quantum computing, but the f
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Encoding-a-qubit-in-superconducting-circuits">Encoding a qubit in superconducting circuits<a class="anchor-link" href="#Encoding-a-qubit-in-superconducting-circuits">¶</a></h3><p>The superconducting LC circuit is a basic case where we can define a qubit, this circuit consists on a capacitor and an inductor that exchange their electric and magnetic energies in the same way as a harmonic oscillator. In fact, we can describe its energy as a quantum harmonic oscillator (QHO):
+<h4 id="Encoding-a-qubit-in-superconducting-circuits">Encoding a qubit in superconducting circuits<a class="anchor-link" href="#Encoding-a-qubit-in-superconducting-circuits">¶</a></h4><p>The superconducting LC circuit is a basic case where we can define a qubit, this circuit consists on a capacitor and an inductor that exchange their electric and magnetic energies in the same way as a harmonic oscillator. In fact, we can describe its energy as a quantum harmonic oscillator (QHO):
 $$H_{LC}=\hbar\omega_q\left(a^\dagger a+\frac{1}{2}\right),$$
 where $\omega_q$ is called the <strong>resonance frequency</strong>. As it's well known, the QHO has an infinite number of energy eigenstates $H_{LC}\ket{n}=E_n\ket{n}=\hbar\omega_q\left(n+1/2\right)$.<br/>
 <br/>
@@ -7888,7 +7888,7 @@ where $\omega_q=\omega_{01}$ is the resonance frequency and $\alpha=\omega_{12}-
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="The-qubit-rotating-frame">The qubit rotating frame<a class="anchor-link" href="#The-qubit-rotating-frame">¶</a></h3>
+<h4 id="The-qubit-rotating-frame">The qubit rotating frame<a class="anchor-link" href="#The-qubit-rotating-frame">¶</a></h4>
 </div>
 </div>
 </div>
@@ -8057,7 +8057,7 @@ In practice, the signal emitted by the driven resonator is amplified and demodul
 <p>Working with high-level quantum computing SDKs -such as Qiskit-, we apply gates to qubits in order to perform operations. From a mathematical perspective, these gates are represented as unitary operators acting on the qubit Hilbert space. However, on real quantum hardware, these abstract operations must be ultimately implemente through physical control signals, such as microwave pulses. <strong>OpenPulse</strong> is a low-level control language within OpenQASM that allows us to describe these physical signals. Instead of working with idealized gates, OpenPulse lets us specify the shape, duration, amplitude, frequency and phase of the pulses that drive the quantum hardware.<br/>
 <br/>
 From the theoretical concepts we have seen, we can now move into practice by understanding the physical meaning of the functions and variables that OpenPulse uses to describe the qubit system.<br/></p>
-<h3 id="Calibration-blocks-in-OpenPulse">Calibration blocks in OpenPulse<a class="anchor-link" href="#Calibration-blocks-in-OpenPulse">¶</a></h3><p>All OpenPulse instructions must be written inside special blocks called <strong>calibration blocks</strong>. They come in two forms:</p>
+<h4 id="Calibration-blocks-in-OpenPulse">Calibration blocks in OpenPulse<a class="anchor-link" href="#Calibration-blocks-in-OpenPulse">¶</a></h4><p>All OpenPulse instructions must be written inside special blocks called <strong>calibration blocks</strong>. They come in two forms:</p>
 <ul>
 <li><p><strong><code>cal</code></strong> blocks:<br/>
 <tab>These blocks are used to access the physical configuration of the device. In practice, they reference the hardware element we need to operate on the qubits, usually by accessing the calibrations of the device. Since these block are only used to retrieve or configure the hardware information, they are considered instantaneous and are executed before the instructions are applied on the hardware.</tab></p>
@@ -8077,7 +8077,7 @@ From the theoretical concepts we have seen, we can now move into practice by und
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Communication-channels-to-the-hardware">Communication channels to the hardware<a class="anchor-link" href="#Communication-channels-to-the-hardware">¶</a></h3><p>A <strong><code>port</code></strong> represents a physical communication channel between the control system anf the quantum device. It defines the path through which signals travel, including components such as digital-to-analog convertes, amplifiers... The exact implementation of these pathways depends on the hardware provider, but usually, each qubit has associated three kinds of ports:</p>
+<h4 id="Communication-channels-to-the-hardware">Communication channels to the hardware<a class="anchor-link" href="#Communication-channels-to-the-hardware">¶</a></h4><p>A <strong><code>port</code></strong> represents a physical communication channel between the control system anf the quantum device. It defines the path through which signals travel, including components such as digital-to-analog convertes, amplifiers... The exact implementation of these pathways depends on the hardware provider, but usually, each qubit has associated three kinds of ports:</p>
 <ul>
 <li><p><strong>Drive port</strong>: sends control pulses to the qubit itself, in order to perform a gate.</p>
 </li>
@@ -8097,7 +8097,7 @@ From the theoretical concepts we have seen, we can now move into practice by und
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Defining-the-physical-systems">Defining the physical systems<a class="anchor-link" href="#Defining-the-physical-systems">¶</a></h3><p>A <strong><code>frame</code></strong> provides a complete physical reference for interacting with a hardware component. It contains the following information:</p>
+<h4 id="Defining-the-physical-systems">Defining the physical systems<a class="anchor-link" href="#Defining-the-physical-systems">¶</a></h4><p>A <strong><code>frame</code></strong> provides a complete physical reference for interacting with a hardware component. It contains the following information:</p>
 <ul>
 <li><p><strong><code>port</code></strong>: the communication channel used to interact with the system.</p>
 </li>
