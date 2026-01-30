@@ -38,13 +38,20 @@
 <script>
 document.getElementById('notebook-frame').onload = function() {
     const iframe = document.getElementById('notebook-frame');
+    
+    // Safety check in case the iframe doesn't exist on a page
+    if (!iframe) return;
+
     // Access the document inside the iframe
     const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     
-    // Select headers (adjust H1/H2/H3 based on your notebook structure)
-    const headers = innerDoc.querySelectorAll('h1, h2, h3');
+    // Select headers
+    const headers = innerDoc.querySelectorAll('h1, h2, h3, h4');
     const navContainer = document.getElementById('sidebar-nav');
     
+    // If no navigation container exists, stop here
+    if (!navContainer) return;
+
     const ul = document.createElement('ul');
 
     headers.forEach((header, index) => {
@@ -60,7 +67,24 @@ document.getElementById('notebook-frame').onload = function() {
         a.href = '#';
         a.style.cursor = 'pointer';
 
-        // When clicked, scroll the IFRAME, not the main window
+        // --- NEW: Add indentation based on Header Level ---
+        const tagName = header.tagName.toUpperCase();
+        
+        if (tagName === 'H2') {
+            li.style.paddingLeft = '15px';
+            a.style.fontSize = '0.95em'; // Optional: slightly smaller text
+        } else if (tagName === 'H3') {
+            li.style.paddingLeft = '30px';
+            a.style.fontSize = '0.9em';
+            a.style.color = '#555'; // Optional: slightly lighter color
+        } else if (tagName === 'H4') {
+             li.style.paddingLeft = '45px';
+             a.style.fontSize = '0.85em';
+             a.style.color = '#777';
+        }
+        // --------------------------------------------------
+
+        // When clicked, scroll the IFRAME
         a.onclick = (e) => {
             e.preventDefault();
             header.scrollIntoView({ behavior: 'smooth' });
@@ -70,6 +94,7 @@ document.getElementById('notebook-frame').onload = function() {
         ul.appendChild(li);
     });
 
+    navContainer.innerHTML = ''; // Clear any existing content
     navContainer.appendChild(ul);
 };
 </script>
