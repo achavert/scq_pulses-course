@@ -8522,7 +8522,7 @@ $$
 s'(t)=\begin{cases}
 s(t),\ \text{on } \mathcal{I},\\
 \\
-\beta\dot{s}(t),\ \text{on } \mathcal{Q}.
+-\beta\dot{s}(t),\ \text{on } \mathcal{Q}.
 \end{cases}
 $$</p>
 </li>
@@ -8550,6 +8550,17 @@ $$</p>
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fe3e7b29">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The gaussian pulse calibration to implement an X gate is similar to the constant, we just need to set a standard deviation for the envelope. This $\sigma$ can also be calibrated to find an optimal duration-width ratio for the gate. Keep in mind that there are limits to how small or large these parameters can be -the backend will raise an error if exceeded- but as a rule of thumb, the gaussian width should not be smaller that 32ns (64dt). Also, a big width compared to the duration will lead to an almost constant pulse.</p>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79d908fb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8569,7 +8580,109 @@ $$</p>
 <span class="s1">        </span>
 <span class="s1">    cal </span><span class="se">{{</span>
 <span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
-<span class="s1">        waveform wf = gaussian(</span><span class="si">{</span><span class="n">_amp</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s1">);</span>
+<span class="s1">        waveform wf = gaussian(</span><span class="si">{</span><span class="n">_amp</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s1">dt);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    '''</span>
+    <span class="k">return</span> <span class="n">_instruction</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=53c923a2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">amps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">700</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>  
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">amps</span><span class="p">:</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="n">build_gaussian</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">run_instruction</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+        <span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">shots</span><span class="p">)</span>
+
+<span class="n">plot_data</span><span class="p">(</span><span class="n">amps</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4bdfdf86">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">amp_cal</span> <span class="o">=</span> <span class="n">amps</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">amps</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">==</span><span class="nb">max</span><span class="p">(</span><span class="n">amps</span><span class="p">[:</span><span class="mi">15</span><span class="p">]))][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fid_cal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">amps</span> <span class="o">==</span> <span class="n">amp_cal</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Gaussian calibration duration: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s1">dt'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Gaussian calibration sd: </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s1">dt'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Gaussian calibrated amplitude: </span><span class="si">{</span><span class="n">amp_cal</span><span class="si">:</span><span class="s1">0.5f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Gaussian calibration fidelity: </span><span class="si">{</span><span class="n">fid_cal</span><span class="si">:</span><span class="s1">0.5f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=badbde7f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="DRAG-X-gate-calibration">DRAG X-gate calibration<a class="anchor-link" href="#DRAG-X-gate-calibration">¶</a></h3>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=40ef0da2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Now, we will calibrate the correction parameter of the DRAG protocol for the last gaussian pulse. We will keep all the calibrated parameters from the gaussian and sweep the $\beta$.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4b9141ce">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">amplitude</span> <span class="o">=</span> <span class="n">amp_cal</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_drag</span><span class="p">(</span><span class="n">_beta</span><span class="p">):</span>
+    <span class="n">_instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+<span class="s1">        </span>
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
+<span class="s1">        waveform wf = drag(</span><span class="si">{</span><span class="n">amplitude</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">_beta</span><span class="si">}</span><span class="s1">);</span>
 <span class="s1">    </span><span class="se">}}</span>
 
 <span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
@@ -8581,17 +8694,66 @@ $$</p>
 <span class="s1">    '''</span>
     <span class="k">return</span> <span class="n">_instruction</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">run_instruction</span><span class="p">(</span><span class="n">_backend</span><span class="p">,</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">_shots</span><span class="p">):</span>  
-        <span class="n">_res</span> <span class="o">=</span> <span class="n">_backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">_shots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>     
-        <span class="k">try</span> <span class="p">:</span>
-            <span class="k">return</span> <span class="n">_res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">_shots</span><span class="p">,))</span>                                      
-        <span class="k">except</span> <span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">_res</span><span class="p">)</span> 
-
-<span class="k">def</span><span class="w"> </span><span class="nf">plot_data</span><span class="p">(</span><span class="n">_amps</span><span class="p">,</span> <span class="n">_p1</span><span class="p">):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_amps</span><span class="p">,</span> <span class="n">_p1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'Amplitude'</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_drag_data</span><span class="p">(</span><span class="n">_betas</span><span class="p">,</span> <span class="n">_p1</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_betas</span><span class="p">,</span> <span class="n">_p1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\beta$'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$P_1$'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=37b7fde5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The corretion parameter can be expressed as $\beta=-\lambda/\alpha$, where $\lambda\in[0,1]$ and $\alpha$ is the transmon's anharmonicity. If the anharmonicity is unknown -which is our case- we can use an estimated value to perform the sweep. For example, we know that the order of the anharmonicity should be around 0.5 GHz -probably less- so we'll try values of $\beta$ from 0 to 1/(0.5GHz).</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f713e1d6">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-12</span><span class="p">,</span> <span class="mf">2e-9</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">700</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>  
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">betas</span><span class="p">:</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="n">build_drag</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">run_instruction</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+        <span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">shots</span><span class="p">)</span>
+
+<span class="n">plot_drag_data</span><span class="p">(</span><span class="n">betas</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e0b315d2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">beta_cal</span> <span class="o">=</span> <span class="n">betas</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">betas</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">==</span><span class="nb">max</span><span class="p">(</span><span class="n">betas</span><span class="p">[:</span><span class="mi">15</span><span class="p">]))][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fid_cal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">betas</span> <span class="o">==</span> <span class="n">betas</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'DRAG calibration amplitude: </span><span class="si">{</span><span class="n">amplitude</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'DRAG calibration duration: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s1">dt'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'DRAG calibration sd: </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s1">dt'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'DRAG calibrated correction: </span><span class="si">{</span><span class="n">beta_cal</span><span class="si">:</span><span class="s1">0.5f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'DRAG calibration fidelity: </span><span class="si">{</span><span class="n">fid_cal</span><span class="si">:</span><span class="s1">0.5f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8604,7 +8766,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.5.-Examples">2.5. Examples<a class="anchor-link" href="#2.5.-Examples">¶</a></h2>
+<h2 id="2.5.-Other-examples">2.5. Other examples<a class="anchor-link" href="#2.5.-Other-examples">¶</a></h2>
 </div>
 </div>
 </div>
@@ -8615,7 +8777,32 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="High-amplitude-side-effects">High amplitude side-effects<a class="anchor-link" href="#High-amplitude-side-effects">¶</a></h3>
+<h3 id="High-amplitude-side-effects">High amplitude side-effects<a class="anchor-link" href="#High-amplitude-side-effects">¶</a></h3><p>The pulse can produce some undesires side effects if its amplitude is big enough: reflections, enhancing the weak anharmonicity effects, Mollow peaks... In general, this will result in a loss of coherence due to non-unitary evolutions in the qubit, meaning that the system is interacting with high-energy levels, the resonator or even other qubits. We can see the result od these effects if we repeat the calibration for the constant pulse at higher amplitudes.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6a2db2c9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">amps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">700</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>  
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">amps</span><span class="p">:</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="n">build_instruction</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">run_instruction</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+        <span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">shots</span><span class="p">)</span>
+
+<span class="n">plot_data</span><span class="p">(</span><span class="n">amps</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -8626,28 +8813,83 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Calibration-with-fixed-amplitude">Calibration with fixed amplitude<a class="anchor-link" href="#Calibration-with-fixed-amplitude">¶</a></h3>
+<h3 id="Calibration-with-fixed-amplitude">Calibration with fixed amplitude<a class="anchor-link" href="#Calibration-with-fixed-amplitude">¶</a></h3><p>We have only calibrated the pulses by sweeping the amplitude, having ser beforehand some values for the time parameters such as the duration or standard deviation. The theory tells us that calibrating the amplitude and the duration is equivalent, because the relevant effect is due to the energy integral of the pulse. But the time discretization performed by the DAG converters makes que duration calibration less convenient, let's see how this calibration would look like</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4d312c02">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">amplitude</span> <span class="o">=</span> <span class="mf">0.02828</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_instruction_time</span><span class="p">(</span><span class="n">_time</span><span class="p">):</span>
+    <span class="n">_instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+<span class="s1">        </span>
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
+<span class="s1">        waveform wf = constant(</span><span class="si">{</span><span class="n">_time</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amplitude</span><span class="si">}</span><span class="s1">);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    '''</span>
+    <span class="k">return</span> <span class="n">_instruction</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_time_data</span><span class="p">(</span><span class="n">_times</span><span class="p">,</span> <span class="n">_p1</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_times</span><span class="p">,</span> <span class="n">_p1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'t [dt]'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$P_1$'</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ebb9c123">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fac17a0b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Qubit-spectroscopy">Qubit spectroscopy<a class="anchor-link" href="#Qubit-spectroscopy">¶</a></h3>
+<p>Keep in mind that the minimum duration time for the pulse is 32ns (64dt).</p>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=929ba644">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f6ad0749">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">700</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>  
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="n">build_instruction</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">run_instruction</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+        <span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">shots</span><span class="p">)</span>
+
+<span class="n">plot_time_data</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
