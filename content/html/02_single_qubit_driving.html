@@ -8006,7 +8006,7 @@ P_1(t)=\frac{1}{2}\left(1-\cos\left(\Omega_R t\right)\right).
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="2.3.-Rabi-oscillations-with-OpenPulse">2.3. Rabi oscillations with OpenPulse<a class="anchor-link" href="#2.3.-Rabi-oscillations-with-OpenPulse">¶</a></h2><p>Now that we have the theory, let's start with the hands-on introduction to its implementation with OpenPulse. The first step will be setting up the basic instructions for custom pulse configuration, then, we will develop an experiment to measure this Rabi oscillations in Qmio.</p>
-<h4 id="Applying-a-custom-pulse">Applying a custom pulse<a class="anchor-link" href="#Applying-a-custom-pulse">¶</a></h4><p>Below there is a basic OpenPulse instruction block for a custom pulse, that recreates the situation described in last section:</p>
+<h3 id="Custom-pulses">Custom pulses<a class="anchor-link" href="#Custom-pulses">¶</a></h3><p>Below there is a basic OpenPulse instruction block for a custom pulse, that recreates the situation described in last section:</p>
 <pre><code>OPENQASM 3;
 defcalgrammar "openpulse";
     
@@ -8262,7 +8262,7 @@ P1 = 0.427
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Observing-Rabi-oscillations">Observing Rabi oscillations<a class="anchor-link" href="#Observing-Rabi-oscillations">¶</a></h4><p>Unfortunatetly, we can only measure once per execution, so in order to observe the Rabi oscillation we need to build a specific instruction for each amplitude. This can be achieved by sweeping the amplitude of the applied pulse, executing a different instruction for each. There are many ways to implement this interaction with Python, the following was chosen to be very accessible to change the parameters of the instruction:</p>
+<h4 id="Rabi-oscillation-and-the-X-gate">Rabi oscillation and the X gate<a class="anchor-link" href="#Rabi-oscillation-and-the-X-gate">¶</a></h4><p>Unfortunatetly, we can only measure once per execution, so in order to observe the Rabi oscillation we need to build a specific instruction for each amplitude. This can be achieved by sweeping the amplitude of the applied pulse, executing a different instruction for each. There are many ways to implement this interaction with Python, the following was chosen to be very accessible to change the parameters of the instruction:</p>
 </div>
 </div>
 </div>
