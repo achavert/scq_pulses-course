@@ -8684,8 +8684,8 @@ Gaussian calibration fidelity: 0.93143
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.5.-Universal-qubit-gate">2.5. Universal qubit gate<a class="anchor-link" href="#2.5.-Universal-qubit-gate">¶</a></h2><p>For now, we have only implemented the X gate because its easy to observe it effects. Quantum computers use a small set of native gates to implement any other unitary trassformation, and for Qmio's case these are the SX, RZ and ECR (for two-qubit interactions). For now, we'll focus on how we can implement any single-qubit gate by just applying pulses configured to perform the SX gate and manipulating the qubit relative phase to virtually implement the RZ gates.</p>
-<h3 id="SX-gate">SX gate<a class="anchor-link" href="#SX-gate">¶</a></h3><p>The SX or $\sqrt{X}$ gate is a rotation $R_X(\pi/2)$ -disregarding global phases- that can be achieved, for the constant pulse, by just applying a pulse of half the amplitude -or duration- of the calibrated X gate. Let's use the calibration from before to observe the result of applying this pulse:</p>
+<h2 id="2.5.-Single-qubit-gates">2.5. Single-qubit gates<a class="anchor-link" href="#2.5.-Single-qubit-gates">¶</a></h2><p>For now, we have only implemented the X gate because its easy to observe it effects. Quantum computers use a small set of native gates to implement any other unitary trassformation, and for Qmio's case these are: the SX, RZ and ECR (for two-qubit interactions). For now, we'll focus on how we can implement any single-qubit gate by just applying pulses configured to perform the SX gate and manipulating the qubit relative phase to virtually implement the RZ gates.</p>
+<h3 id="SX-gate">SX gate<a class="anchor-link" href="#SX-gate">¶</a></h3><p>The SX or $\sqrt{X}$ gate is a rotation $R_X(\pi/2)$ -disregarding global phases- that can be achieved by just applying a constant pulse of half the amplitude -or duration- of the calibrated X gate. Let's use the calibration from before to observe the result:</p>
 </div>
 </div>
 </div>
@@ -8800,7 +8800,134 @@ Job started</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Virtual-RZ-gate">Virtual RZ gate<a class="anchor-link" href="#Virtual-RZ-gate">¶</a></h3><p>The RZ gate implementation is rather different, as we don't need to apply any pulse.</p>
+<h3 id="Virtual-RZ-gate">Virtual RZ gate<a class="anchor-link" href="#Virtual-RZ-gate">¶</a></h3><p>The RZ gate implementation is rather different, as we don't need to apply any pulse. When we talked about the qubit frame, we saw that there is an intrinsic rotation over the Z axis that we corrected in order to apply the pulses in the "timeless" frame. We can change it by adding some relative phase and apply the same pulse in this new frame, resulting in a pulse that also applies the RZ. <br/>
+<br/></p>
+<p>For example, we want to apply an RY gate, we can decompose it in the following RX and RZ rotations:</p>
+<p>$$R_Y(\theta)=R_Z(-\pi/2)R_X(\theta)R_Z(\pi/2),$$</p>
+<p>which can be implemented by changing the phase of the frame by $\pi/2$ and the applying the pulse for the RX gate. The final RZ does not change the measurement outcome, because it doesn't change the projection of the state over the Z axis, so we don't need to implement it, unless there are other gates after.<br/>
+<br/>
+Let's see how we would desing this gate with OpenPulse. There are two ways to apply phase changes to the qubit frame:</p>
+<ul>
+<li><p><strong><code>set_phase(frame, angle)</code></strong>: it changes the total phase of the frame to the input value. It's useful to reset the frame phase to 0 if needed or if you want to keep track of the total phase.</p>
+</li>
+<li><p><strong><code>shift_phase(frame, angle)</code></strong>: it shifts the phase of the frame by the input value. This is equivalent to applying a RZ over the qubit's Z axis.</p>
+</li>
+</ul>
+<p>As we already have $R_X(\pi/2)$ calibrated, we are going to apply an $R_Y(\pi/2)$:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3f1f8d07">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">amp_cal</span> <span class="o">=</span> <span class="mf">0.02222</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="n">RYgate</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+<span class="s1">        </span>
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
+<span class="s1">        waveform wf = constant(</span><span class="si">{</span><span class="n">duration</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amp_cal</span><span class="si">}</span><span class="s1">);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        shift_phase(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s1">)</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">'''</span>
+
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">5000</span>                                                                       
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>                                     
+    <span class="n">res</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">RYgate</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>     
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">shots</span><span class="p">,))</span>                                     
+    <span class="k">except</span> <span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>  
+        
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2d02f240">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="The-universal-single-qubit-gate">The universal single-qubit gate<a class="anchor-link" href="#The-universal-single-qubit-gate">¶</a></h3><p>It can be proven that any single-qubit gate can be expressed as the following parametrized unitary:</p>
+<p>$$\begin{align*}
+\mathcal{U}(\theta,\varphi,\lambda)&amp;=\begin{pmatrix}
+\cos(\theta/2) &amp; -e^{i\lambda}\sin(\theta/2)\\
+e^{i\varphi}\sin(\theta/2) &amp; e^{i(\varphi+\lambda)}\cos(\theta/2)
+\end{pmatrix}\\
+&amp;=R_Z\left(\varphi-\frac{\pi}{2}\right)R_X\left(\frac{\pi}{2}\right)R_Z\left(\pi-\theta\right)R_X\left(\frac{\pi}{2}\right)R_Z\left(\lambda-\frac{\pi}{2}\right).
+\end{align*}
+$$</p>
+<p>This means that we can apply any single qubit quantum gate with just SX gates -equivalent to the $R_X(\pi/2)$ except for a global phase- and the parametrized virtual $R_Z$.<br/>
+<br/>
+For example, let's apply the $R_X(\pi/4)$ rotation with the calibrated SX from before, de decomposition of the gate is:
+$$R_X(\theta)=R_Z(-\pi)R_X(\pi/2)R_Z(\pi-\theta)R_X(\pi/2)R_Z(0)\equiv SX\cdot R_Z(\pi-\theta)\cdot SX$$</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=471db940">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">amp_cal</span> <span class="o">=</span> <span class="mf">0.02222</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>
+
+<span class="n">RYgate</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">    OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+<span class="s1">        </span>
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive;</span>
+<span class="s1">        waveform wf = constant(</span><span class="si">{</span><span class="n">duration</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amp_cal</span><span class="si">}</span><span class="s1">);</span>
+<span class="s1">    </span><span class="se">}}</span>
+<span class="s1">    </span>
+<span class="s1">    defcal custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">        shift_phase(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s1">)</span>
+<span class="s1">        play(q</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">_drive, wf);</span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    custom_pulse $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">qubit</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">'''</span>
+
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">5000</span>                                                                       
+<span class="k">with</span> <span class="n">service</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"qpu"</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">:</span>                                     
+    <span class="n">res</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">RYgate</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>     
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">shots</span><span class="p">,))</span>                                     
+    <span class="k">except</span> <span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>  
+        
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
