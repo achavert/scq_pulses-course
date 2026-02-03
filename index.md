@@ -26,7 +26,7 @@ This course is composed of four notebooks that explain the superconducting qubit
 ### Documentation
 - [OpenPulse grammar documentation for Qmio](/content/notebookE1.md)
 
-- [Tranmon and pulse-level control theory](/content/notebookE2.md)
+- [Transmon and pulse-level control theory](/content/notebookE2.md)
 
 
 ## Requirements
