@@ -11,15 +11,15 @@ A practical introduction to pulse-level control of superconducting qubits with t
 ## Setup
 Access the Qmio CPD nodes at CESGA (through a @qmio.cesga.es account):
 
-```ssh <user>@qmio.cesga.es´´´
+```ssh <user>@qmio.cesga.es```
 
 or
 
 ```ssh -m hmac-sha2-512 <user>@qmio.cesga.es```
 
-
-
 Request a ```compute``` node.<br>
+<br>
+
 Run the following comands:
 
 ```
