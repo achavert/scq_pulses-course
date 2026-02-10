@@ -5,7 +5,7 @@ layout: index
  
 ## Pulse-level control at Qmio with OpenPulse
 
-A practical introduction to pulse-level control of superconducting qubits with the OpenPulse and Qmio's implemented features.
+This course is an introduction to pulse-level control on superconducting qubits. You'll learn the mechanism behind quantum gate implementation through microwave pulses, performing practical examples with OpenPulse on Qmio. Along with the presential session at Cesga, estimated to be 4 hours long, a set of notebooks and documentation is given in order to follow and expand the contents of the course. 
 
 
 ## Setup
