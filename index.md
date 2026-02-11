@@ -20,7 +20,6 @@ or
 ```ssh -m hmac-sha2-512 <user>@qmio.cesga.es```
 
 Request a ```compute``` node.<br>
-<br>
 
 Run the following comands:
 
