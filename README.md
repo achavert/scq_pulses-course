@@ -6,7 +6,7 @@ On this course, we'll learn how Qmio physically implements its quantum gates thr
 
 
 ## Setup
-Access the Qmio CPD nodes at CESGA (through a @qmio.cesga.es account):
+First, to access the Qmio CPD nodes at CESGA (through a @qmio.cesga.es account) type:
 
 ```ssh <user>@qmio.cesga.es```
 
@@ -25,7 +25,7 @@ jupyter notebook --ip=$(hostname -i) --port=8889 &> opa.out &
 cat opa.out
 ```
 
-Copy the first link returned and paste it on your browser. You are ready to execute the notebooks on this course, you can find them in the ```\notebooks``` folder in this repository.
+Copy the first link printed and paste it on your browser. Now you are ready to execute the notebooks of this course, you can find them in the ```\notebooks``` folder from this repository.
 
 
 ## Contents
@@ -33,24 +33,11 @@ Copy the first link returned and paste it on your browser. You are ready to exec
 This course is composed of four notebooks that explain the superconducting qubit system and its control at pulse level. Oriented to understand how the native quantum gates are physically implemented, and to be able to design experiments in Qmio. Also, it includes a revised documentation of the OpenPulse grammar, specifically for Qmio's available features, and a more in depth dive into the theory of pulse control.  
 
 ### Presentation
+
 [Link to the slides](https://www.canva.com/design/DAHBdmQNDFE/8PaGsgNXGk9oKSen7-YmTQ/edit?utm_content=DAHBdmQNDFE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-### Notebooks
-- [1. **Introduction to qubit physics**](/content/notebook01.md)
-
-- [2. **Single-qubit driving**](/content/notebook02.md)
-
-- [3. **Qubit spectroscopy**](/content/notebook03.md)
-
-- [4. **Two-qubit driving**](/content/notebook04.md)
-
-### Documentation
-- [OpenPulse grammar documentation for Qmio](/content/notebookE1.md)
-
-- [Transmon and pulse-level control theory](/content/notebookE2.md)
-
-
 ## References and acknowledgements
+
 This course was produced as part of the QUORUM SPAIN project at the Galician Supercomputing Center (CESGA).<br>
 <br>
 QUORUM SPAIN is a project funded by CDTI and financed with funds from European Union Next Generation through the Recovery, Transformation and Resilience Plan.
