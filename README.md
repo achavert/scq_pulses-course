@@ -32,6 +32,8 @@ Copy the first link returned and paste it on your browser. You are ready to exec
 
 This course is composed of four notebooks that explain the superconducting qubit system and its control at pulse level. Oriented to understand how the native quantum gates are physically implemented, and to be able to design experiments in Qmio. Also, it includes a revised documentation of the OpenPulse grammar, specifically for Qmio's available features, and a more in depth dive into the theory of pulse control.  
 
+### Presentation
+[Link to the slides](https://www.canva.com/design/DAHBdmQNDFE/8PaGsgNXGk9oKSen7-YmTQ/edit?utm_content=DAHBdmQNDFE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ### Notebooks
 - [1. **Introduction to qubit physics**](/content/notebook01.md)
