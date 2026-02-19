@@ -7913,11 +7913,9 @@ where $\omega_q=\omega_{01}$ is the resonance frequency and $\alpha=\omega_{12}-
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>Before studying the dynamics of the pulse interaction with the qubit, we need to consider the intrinsic dynamics of the ocillator where we have encoded it. Let's assume a 2-level qubit system initially prepared in the state: $$\ket{\psi_0}=\cos(\theta/2)\ket{0}+e^{i\phi}\sin(\theta/2)\ket{1}.$$
 In the absence of external interactions, the time evolution given by the Schrödinger's equation leads, in this case, to the following time evolution unitary operator:
-$$ U(t)=\exp\left(i \frac{\omega_q t}{2}\sigma_z\right) = \cos\left(\omega_q t/2\right)I+i\sin\left(\omega_q t/2\right)\sigma_z.$$
-The time evolution for the qubit state is, omitting global phases:
-$$\ket{\psi(t)}=\cos\left(\theta/2\right)\ket{0}+e^{i\left(\phi-\omega_q t\right)}\sin\left(\theta/2\right)\ket{1}\equiv \text{RZ}\left(-\omega_q t\right),$$
-which corresponds to a continous RZ rotation on the Bloch sphere, with a predictable rate set by its resonance frequency. <br/>
-<br/>
+$$ U(t)=\exp\left(i \frac{\omega_q t}{2}\sigma_z\right) \equiv \text{RZ}\left(-\omega_q t\right).$$
+which corresponds to a continous RZ rotation on the Bloch sphere, with a predictable rate set by its resonance frequency. For example, time evolution for the qubit state is, omitting global phases:
+$$\ket{\psi(t)}=\text{RZ}(-\omega_q t)\ket{\psi_0}=\cos\left(\theta/2\right)\ket{0}+e^{i\left(\phi-\omega_q t\right)}\sin\left(\theta/2\right)\ket{1}.$$
 The main reason for keeping track of this intrinsic time evolution is because it's often convenient to work in the <strong>rotation frame</strong> of the qubit, where this evolution is removed by applying the known $U(t)^\dagger$. In this frame, pulses have much simpler expressions.</p>
 </div>
 </div>

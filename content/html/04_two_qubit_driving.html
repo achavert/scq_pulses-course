@@ -7873,9 +7873,10 @@ where $\theta=-\mu_1\omega V_{d,1}(t)$.<br/>
 <figure style="text-align: center; margin: auto; max-width: 720px;">
 <img alt="ECR Schedule" src="./media/ecr_schedule.png" style="display: block; margin: 0 auto;" width="500"/>
 <figcaption style="margin-top: 12px; font-size: 0.9em; color: #444; line-height: 1.5; text-align: left;">
-        [1] a. ECR pulse schedule: two cross-resonance tones (gray) applied on the control qubit with the target's resonance frequency; each followed by a pi-pulse on the control. <br/> 
+        a. ECR pulse schedule: two cross-resonance tones (gray) applied on the control qubit with the target's resonance frequency; each followed by a pi-pulse on the control. <br/> 
         b. Action of each pulse on the target at |0&gt; depending on the arbitrary control state over the Bloch sphere.<br/>
-        c. Evolution of the transmon's level populations, depending on the control state, across the pulse schedule.
+        c. Evolution of the transmon's level populations, depending on the control state, across the pulse schedule.<br/>
+        [1] https://doi.org/10.1103/PRXQuantum.4.030327 
     </figcaption>
 </figure>
 <br/>
@@ -7905,7 +7906,7 @@ where $\theta=-\mu_1\omega V_{d,1}(t)$.<br/>
 <figure style="text-align: center; margin: auto; max-width: 720px;">
 <img alt="Qmio Connectivity" src="./media/qmio_connectivity.png" style="display: block; margin: 0 auto;" width="500"/>
 <figcaption style="margin-top: 12px; font-size: 0.9em; color: #444; line-height: 1.5; text-align: center;">
-        Qmio User Guide (https://cesga-docs.gitlab.io/qmio-user-guide/installation_overview.html)
+        Qmio's QPU logical qubit connectivity, from Qmio User Guide.
     </figcaption>
 </figure>
 <br/>
@@ -7914,6 +7915,102 @@ where $\theta=-\mu_1\omega V_{d,1}(t)$.<br/>
 
 Physica ID’s: from 1-35  (1, 10 and 16 missing)</code></pre>
 <p>For example, if we wanted to use the logical $0\rightarrow 1$, we would use the physical qubits 2 and 3, as the physical qubit 1 is not currently available.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=93d6bb5f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Cross-resonance-driving">Cross-resonance driving<a class="anchor-link" href="#Cross-resonance-driving">¶</a></h3><p>Before implementing the ECR gate, let's see how the cross-resonance driving works. First, we set up our Qmio workspace:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0b131849">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qmio</span><span class="w"> </span><span class="kn">import</span> <span class="n">QmioRuntimeService</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">service</span> <span class="o">=</span> <span class="n">QmioRuntimeService</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_instruction</span><span class="p">(</span><span class="n">_backend</span><span class="p">,</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">_shots</span><span class="p">):</span>  
+        <span class="n">_res</span> <span class="o">=</span> <span class="n">_backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="n">_instruction</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">_shots</span><span class="p">,</span> <span class="n">res_format</span> <span class="o">=</span> <span class="s1">'raw'</span><span class="p">)</span>     
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">_res</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]</span>                                      
+        <span class="k">except</span> <span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">_res</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a7477d68">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>We are going to perform the CR between the qubit <strong>2 (control)</strong> and <strong>3 (target)</strong>. This means that we will drive qubit 2 with the resonance frequency of qubit 3. To do this, we need two OpenPulse functions:</p>
+<ul>
+<li><p><code>get_frequency(frame)</code>: returns the resonance frequency of a qubit frame as a float.</p>
+</li>
+<li><p><code>newframe(port/frame, frequency, phase)</code>: creates a new qubit frame from an existing one, specifying its new frequency an accrued relative phase.</p>
+</li>
+</ul>
+<p>Here, we'll use some selected amplitude and duration for the pulse in order to visualize the gate's effect, later we'll perform a proper calibration.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6b181a7b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">q_control</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># control</span>
+<span class="n">q_target</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># target</span>
+
+
+<span class="sd">'''Pulse parameters '''</span>
+<span class="n">amp_cr</span> <span class="o">=</span> <span class="mf">0.5051</span>
+<span class="n">duration_cr</span> <span class="o">=</span> <span class="mi">250</span> <span class="c1"># dt</span>
+
+<span class="n">inst</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''OPENQASM 3;</span>
+<span class="s1">    defcalgrammar "openpulse";</span>
+
+<span class="s1">    cal </span><span class="se">{{</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">_drive;    // import control qubit frame</span>
+<span class="s1">        extern frame q</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">_drive;     // import target qubit frame</span>
+
+<span class="s1">        target_freq = get_frequency(q</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">_drive);                     // import target qubit frequency from frame</span>
+<span class="s1">        frame cr_frame = newframe(q</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">_drive,  target_freq, 0.0);   // create new frame on the control qubit with the target frequency</span>
+<span class="s1">        waveform wf_cr = constant(</span><span class="si">{</span><span class="n">duration_cr</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amp_cr</span><span class="si">}</span><span class="s1">);               // define  </span>
+<span class="s1">    </span><span class="se">}}</span>
+
+<span class="s1">    defcal CR_control $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">, $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="se">{{</span>
+<span class="s1">        play(cr_frame, wf_cr);</span>
+<span class="s1">    </span><span class="se">}}</span>
+<span class="s1">    </span>
+<span class="s1">    x $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    CR_control $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">, $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">;'''</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
