@@ -7943,9 +7943,10 @@ $$P_n=\frac{1}{Z}\exp\left(-\frac{\hbar\omega_n}{k_BT}\right),$$
 where $\hbar\omega_n$ is the energy of the eigenstate $\ket{n}$ and $Z$ is the partition function given by:
 $$Z=\sum_{n=0}^\infty \exp\left(-\frac{\hbar\omega_n}{k_BT}\right).$$</p>
 <p>In other words, the cold thermal bath will bring the qubit to some state very close to $\ket{0}$, with residual excited populations, from which we can operate assuming that we are working with an isolated qubit, applying the pulses to perform the desired gates in our computations. This is why the computational state $\ket{0}$ was conveniently chosen to be the ground-state and also the default initialization in many quantum circuit formalisms.<br/>
-<br/>
-Some interesting questions may arise: How does the qubit system evolve during this cooling? Does the thermal bath have a relevant effect on the qubit during the computations?<br/>
-This cooling process is called <strong>thermalization</strong> and it can be modeled using the Lindblad equations. This method consists of modeling the possible interactions of the bath's photons with the qubit, dividing them in three types:</p>
+<br/></p>
+<p>Some interesting questions may arise: How does the qubit system evolve during this cooling? Does the thermal bath have a relevant effect on the qubit during the computations?<br/>
+<br/></p>
+<p>This cooling process is called <strong>thermalization</strong> and it can be modeled using the Lindblad equations. This method consists of modeling the possible interactions of the bath's photons with the qubit, dividing them in three types:</p>
 <ul>
 <li><strong>Excitation</strong>: a photon with energy $\hbar\omega_q$ interacts with the qubit, increasing its energy.</li>
 <li><strong>Relaxation</strong>: the qubit spontaneously emits a photon of energy $\hbar\omega_q$ to the bath, decreasing its energy.</li>

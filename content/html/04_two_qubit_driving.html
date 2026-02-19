@@ -7998,16 +7998,16 @@ Physica ID’s: from 1-35  (1, 10 and 16 missing)</code></pre>
 
 <span class="s1">        target_freq = get_frequency(q</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">_drive);                     // import target qubit frequency from frame</span>
 <span class="s1">        frame cr_frame = newframe(q</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">_drive,  target_freq, 0.0);   // create new frame on the control qubit with the target frequency</span>
-<span class="s1">        waveform wf_cr = constant(</span><span class="si">{</span><span class="n">duration_cr</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amp_cr</span><span class="si">}</span><span class="s1">);               // define  </span>
+<span class="s1">        waveform wf_cr = constant(</span><span class="si">{</span><span class="n">duration_cr</span><span class="si">}</span><span class="s1">dt, </span><span class="si">{</span><span class="n">amp_cr</span><span class="si">}</span><span class="s1">);               // define the pulse waveform</span>
 <span class="s1">    </span><span class="se">}}</span>
 
-<span class="s1">    defcal CR_control $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">, $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="se">{{</span>
-<span class="s1">        play(cr_frame, wf_cr);</span>
+<span class="s1">    defcal CR_control $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">, $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="se">{{</span><span class="s1"> // the defcal function must specify both qubit, to apply the implicit time barrier</span>
+<span class="s1">        play(cr_frame, wf_cr);                    // play the pulse schedule over the control qubit</span>
 <span class="s1">    </span><span class="se">}}</span>
-<span class="s1">    </span>
-<span class="s1">    x $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">;</span>
-<span class="s1">    CR_control $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">, $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">;</span>
-<span class="s1">    measure $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">;</span>
+
+<span class="s1">    x $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">;                         // apply a calibrated X gate on the control qubit</span>
+<span class="s1">    CR_control $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">, $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">;   // apply the CR pulse on the control qubit</span>
+<span class="s1">    measure $</span><span class="si">{</span><span class="n">q_control</span><span class="si">}</span><span class="s1">;                   // measure both qubits</span>
 <span class="s1">    measure $</span><span class="si">{</span><span class="n">q_target</span><span class="si">}</span><span class="s1">;'''</span>
 </pre></div>
 </div>
