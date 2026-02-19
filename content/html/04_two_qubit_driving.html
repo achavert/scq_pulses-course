@@ -7802,6 +7802,15 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>$ \newcommand{\bra}[1]{\langle #1|} $
+$ \newcommand{\ket}[1]{|#1\rangle} $
+$ \newcommand{\braket}[2]{\langle #1|#2\rangle} $
+$ \newcommand{\ketbra}[2]{| #1\rangle \langle #2|} $
+$ \newcommand{\tr}{{\rm tr}} $
+$ \newcommand{\i}{{\color{blue} i}} $
+$ \newcommand{\Hil}{{\cal H}} $
+$ \newcommand{\V}{{\cal V}} $
+$ \newcommand{\bn}{{\bf n}} $</p>
 <h1 id="4.-Two-qubit-driving">4. Two-qubit driving<a class="anchor-link" href="#4.-Two-qubit-driving">¶</a></h1>
 </div>
 </div>
@@ -7835,6 +7844,41 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>There are many methods to produce entanglement between superconducting qubits, usually grouped in two families: one using local magnetic fields to tune transition frequencies, and other that only relies on microwave control. Here we'll focus on the only-microwave gates, as they are the ones that Qmio can perform.<br/>
+<br/></p>
+<p>Let's assume we have a physical channel that allows the coupling of qubits, and that these qubits were prepared with different resonant frequencies. What would happen if we drived one qubit with the other's frequency?<br/>
+<br/></p>
+<p>Extending the driving Hamiltonian formulation of the single qubit gate, we arrive to this Hamiltonian that represents the effects of the driving on the first qubit (1):
+$$H_{d,1}=\Omega V_{d,1}(t)\left(\sigma_x\otimes I + \nu_1 I\otimes\sigma_x+\mu_1\sigma_z\otimes\sigma_x\right),$$
+where $V_{d,1}(t)$ is the oscillating potential generating the driving and $\nu$ and $\mu$ are some constants that depend on the coupling of the qubits, the frequency difference and anharmonicity. One key assumtion is that the frequency difference is much greater that the coupling. If we drive the qubit 1 with the frequency of qubit 2, we can supress the usual Rabi oscillation on 1:
+$$\begin{align*}
+H_{d,1}^{(\omega_2)}=\Omega V_{d,1}^{(\omega_2)}(t)\left(\nu_1 I+\mu_1\sigma_z\right)\otimes\sigma_x,
+\end{align*}$$
+which means that this pulse will produce a Rabi oscillation on qubit 2 with a period that depends on the state of qubit 1. <br/>
+<br/></p>
+<p>The ideal unitary transformation over the 2-qubit space it's call <strong>cross-resonance gate</strong> (CR), and can be expressed as:</p>
+<p>$$U_{CR_\theta}=
+\begin{pmatrix}
+\cos\theta/2 &amp; -i\sin\theta/2 &amp; 0 &amp; 0\\
+-i\sin\theta/2 &amp; \cos\theta/2 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; \cos\theta/2 &amp; i\sin\theta/2\\
+0 &amp; 0 &amp; i\sin\theta/2 &amp; \cos\theta/2
+\end{pmatrix}\equiv ZX_\theta,$$
+where $\theta=-\mu_1\omega V_{d,1}(t)$.<br/>
+<br/></p>
+<p>Nevertheless, the effect of the off-resonance driving produces significant effects on the driven qubit like AC Stark shift, the coherent error induced by the $\sigma_z\otimes I$ term or the leakeage to higher energy levels. These effects reduce the fidelity of the gate. One method to overcome some of this complications it's the so-called <strong>echo cross-resonance gate</strong> (ECR), which consists of a modified pulse schedule to echo away this interactions. This modified version of the gate has been found to increase the fidelity for the desired unitary gate, and is the native entanglement gate at Qmio, which is calibrated along the SX. <br/>
+<br/></p>
+<p>The pulse shcedule consists of CR pulses applied to the control qubit, along with rotations over the X axis also on the control qubit:</p>
+<br/>
+<figure style="text-align: center; margin: auto; max-width: 720px;">
+<img alt="ECR Schedule" src="./media/ecr_schedule.png" style="display: block; margin: 0 auto;" width="500"/>
+<figcaption style="margin-top: 12px; font-size: 0.9em; color: #444; line-height: 1.5; text-align: left;">
+        [1] a. ECR pulse schedule: two cross-resonance tones (gray) applied on the control qubit with the target's resonance frequency; each followed by a pi-pulse on the control. <br/> 
+        b. Action of each pulse on the target at |0&gt; depending on the arbitrary control state over the Bloch sphere.<br/>
+        c. Evolution of the transmon's level populations, depending on the control state, across the pulse schedule.
+    </figcaption>
+</figure>
+<br/>
 </div>
 </div>
 </div>
@@ -7850,27 +7894,42 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8c2b913e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ddd78075">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="4.3.-ECR-calibration-example">4.3. ECR calibration example<a class="anchor-link" href="#4.3.-ECR-calibration-example">¶</a></h2>
+<p>When working with entangling gates on real hardware, the first thing we need to have in mind is the QPU connectivity. The current logical qubit connectivity can be checked at the <a href="https://cesga-docs.gitlab.io/qmio-user-guide/installation_overview.html">Qmio User Guide</a>:</p>
+<br/>
+<figure style="text-align: center; margin: auto; max-width: 720px;">
+<img alt="Qmio Connectivity" src="./media/qmio_connectivity.png" style="display: block; margin: 0 auto;" width="500"/>
+<figcaption style="margin-top: 12px; font-size: 0.9em; color: #444; line-height: 1.5; text-align: center;">
+        Qmio User Guide (https://cesga-docs.gitlab.io/qmio-user-guide/installation_overview.html)
+    </figcaption>
+</figure>
+<br/>
+<p>It's important to note that the qubit IDs we use in OpenPulse are the physical qubits. The logic to physical correspondence is a simple mapping:</p>
+<pre><code>Logical ID’s: from 0-31
+
+Physica ID’s: from 1-35  (1, 10 and 16 missing)</code></pre>
+<p>For example, if we wanted to use the logical $0\rightarrow 1$, we would use the physical qubits 2 and 3, as the physical qubit 1 is not currently available.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5637013b">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=28433c78">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><ul>
+<li><p>[1] Fischer, L. E., Chiesa, A., Tacchino, F., Egger, D. J., Carretta, S., &amp; Tavernelli, I. (2023). Universal Qudit Gate Synthesis for Transmons. PRX Quantum, 4(3), 030327. <a href="https://doi.org/10.1103/PRXQuantum.4.030327">https://doi.org/10.1103/PRXQuantum.4.030327</a></p>
+</li>
+<li><p>[2] P. Krantz, M. Kjaergaard, F. Yan, T. P. Orlando, S. Gustavsson, W. D. Oliver; A quantum engineer's guide to superconducting qubits. Appl. Phys. Rev. 1 June 2019; 6 (2): 021318. <a href="https://doi.org/10.1063/1.5089550">https://doi.org/10.1063/1.5089550</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
