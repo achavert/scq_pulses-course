@@ -22,7 +22,7 @@ Entanglement is one of the pillars behind quantum computing. On this notebook we
 
 ## Practices
 
-### [Practice 1: Measuring T1](practice1.md)
+<a href="notebooks/practices/practice1.ipynb" download>Practice 1: Measuring T1</a>
 
 ## Documentation
 
