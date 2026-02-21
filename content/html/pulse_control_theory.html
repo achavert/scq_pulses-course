@@ -8536,19 +8536,21 @@ $$\begin{align*}
 \end{align*}$$
 beacuse it's time independent, the unitary time evolution operator is:
 $$\begin{align*}
-U_{\phi=0}(t)=\exp\left(-i\tilde{H}t/\hbar\right)&amp;=\exp\left(-i\frac{\Omega V_0}{2\hbar}t\sigma_x\right)=\exp\left(-i\frac{\Omega_R}{2}t\sigma_x\right)\\
+U_{\phi=0}(t)=\exp\left(-i\tilde{H}t/\hbar\right)&amp;=\exp\left(i\frac{\Omega V_0}{2\hbar}t\sigma_x\right)\\
 \\
-&amp;=\cos\left(\Omega_Rt/2\right)I_2-i\sin\left(\Omega_Rt/2\right)\sigma_x\\
+&amp;=\exp\left(\frac{\Omega_R}{2}t\sigma_x\right)\\
+\\
+&amp;=\cos\left(\Omega_Rt/2\right)I_2+i\sin\left(\Omega_Rt/2\right)\sigma_x\\
 \\
 &amp;=\begin{pmatrix}
-\cos\left(\Omega_Rt/2\right) &amp; -i\sin\left(\Omega_Rt/2\right)\\
--i\sin\left(\Omega_Rt/2\right) &amp; \cos\left(\Omega_Rt/2\right)
-\end{pmatrix},
+\cos\left(\Omega_Rt/2\right) &amp; i\sin\left(\Omega_Rt/2\right)\\
+i\sin\left(\Omega_Rt/2\right) &amp; \cos\left(\Omega_Rt/2\right)
+\end{pmatrix}=RX(-\Omega_R t),
 \end{align*}$$
 where we can see an oscillatory behaviour of frequency $\Omega_R=\Omega V_0/\hbar$. Let's assume that the qubit is initally in the pure qubit state $\ket{\psi_0}=a_0\ket{0}+a_1\ket{1}$, if we apply a pulse with the shape described before, the state of the system in some time arbitrary time $t$ is:
 $$\begin{align*}
 \ket{\psi(t)}&amp;=U_{\phi=0}(t)\ket{\psi_0}\\
-&amp;=\left[a_0\cos\left(\Omega_Rt/2\right)-ia_1\sin\left(\Omega_Rt/2\right)\right]\ket{0}+\left[-ia_0\sin\left(\Omega_Rt/2\right)+a_1\cos\left(\Omega_Rt/2\right)\right]\ket{1}.
+&amp;=\left[a_0\cos\left(\Omega_Rt/2\right)+ia_1\sin\left(\Omega_Rt/2\right)\right]\ket{0}+\left[ia_0\sin\left(\Omega_Rt/2\right)+a_1\cos\left(\Omega_Rt/2\right)\right]\ket{1}.
 \end{align*}$$
 Let's observe how this time evolution affects each basis state:
 $$\begin{align*}
@@ -8565,7 +8567,7 @@ $$U_{\phi=0}(T_\pi)=\begin{pmatrix}
 0 &amp; 1\\
 1 &amp; 0
 \end{pmatrix}=-i\sigma_x,$$
-$$\begin{align*}\ket{\psi(T_\pi)}&amp;=\left[a_0\cos\left(\pi/2\right)-ia_1\sin\left(\pi/2\right)\right]\ket{0}+\left[-ia_0\sin\left(\pi/2\right)+a_1\cos\left(\pi/2\right)\right]\ket{1}=-ia_1\ket{0}-ia_0\ket{1},
+$$\begin{align*}\ket{\psi(T_\pi)}&amp;=\left[a_0\cos\left(\pi/2\right)+ia_1\sin\left(\pi/2\right)\right]\ket{0}+\left[ia_0\sin\left(\pi/2\right)+a_1\cos\left(\pi/2\right)\right]\ket{1}=ia_1\ket{0}+ia_0\ket{1},
 \end{align*}$$
 $$\begin{align*}
 P_0(T_\pi)&amp;=|\bra{0}\ket{\psi(T_\pi)}|^2=|a_1|^2=0,\\
@@ -8576,9 +8578,9 @@ If we apply again the same pulse on this new state, is easy to check that we get
 $$\ket{\psi(2T_\pi)}=a_0\ket{0}+a_1\ket{1}=\ket{0}.$$
 This $\pi$-pulse is the pulse-level representation of a $X$ gate operation, leaving a global phase, in the ideal case ($p_0=1$):
 $$\begin{align*}
-U_{\phi=0}(T_\pi)\ket{0}&amp;=-i\ket{1}\equiv\ket{1}=X\ket{0},\\
+U_{\phi=0}(T_\pi)\ket{0}&amp;=i\ket{1}\equiv\ket{1}=X\ket{0},\\
 \\
-U_{\phi=0}(T_\pi)\ket{1}&amp;=-i\ket{0}\equiv\ket{0}=X\ket{1}.\\
+U_{\phi=0}(T_\pi)\ket{1}&amp;=i\ket{0}\equiv\ket{0}=X\ket{1}.\\
 \end{align*}$$</p>
 </div>
 </div>

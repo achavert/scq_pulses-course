@@ -7980,10 +7980,10 @@ In general, this expression is the only thing we need to design the quantum gate
 <p>For example, let's work with the amplitude envelope $s(t)=1$ -also called <strong>constant</strong> pulse- and no initial phase, meaning that $\mathcal{I}=1$ and $\mathcal{Q}=0$. The Hamiltonian for this particular case is:
 $$\tilde{H}=-\frac{\Omega V_0}{2}\sigma_x,$$
 that determines an unitary evolution of the system that corresponds to a rotation over the $X$ axis of the Bloch sphere, an $R_X$ gate:
-$$U(t)=\exp\left(-i\frac{\Omega V_0}{2\hbar}t\cdot\sigma_x\right)=\exp\left(-i\frac{\Omega_R}{2}t\cdot\sigma_x\right)=R_X\left(\Omega_R t\right).$$
+$$U(t)=\exp\left(i\frac{\Omega V_0}{2\hbar}t\cdot\sigma_x\right)=\exp\left(i\frac{\Omega_R}{2}t\cdot\sigma_x\right)=R_X\left(-\Omega_R t\right).$$
 In other words, we have implemented a parametrized rotation on the qubit state that depends on some tunnable parameters. <br/>
 <br/></p>
-<p>This rotation is the physical representation of the <strong>Rabi oscillation</strong> we saw before. If we compute the propability of the computational states over time -starting from $\ket{0}$- we get the expected oscillatory behaviour between them:</p>
+<p>This rotation is the physical representation of the <strong>Rabi oscillation</strong> we saw before. If we compute the probability of the computational states over time -starting from $\ket{0}$- we get the expected oscillatory behaviour between them:</p>
 <p>$$\begin{align*}
 P_0(t)=\frac{1}{2}\left(1+\cos\left(\Omega_R t\right)\right),\quad
 P_1(t)=\frac{1}{2}\left(1-\cos\left(\Omega_R t\right)\right).
